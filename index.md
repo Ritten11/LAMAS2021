@@ -1,30 +1,38 @@
-## Welcome to GitHub Pages
+Authors: Ella Collins, Lonneke Langeveld and Ritten Roothaert. 
 
-You can use the [editor on GitHub](https://github.com/Ritten11/LAMAS2021/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Introduction
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+We are going to model the Resistance game with the help of Dynamic Epistemic Logic
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Theory
 
-```markdown
-Syntax highlighted code block
+## Results
 
-# Header 1
-## Header 2
-### Header 3
+## Conclusion
 
-- Bulleted
-- List
+## Running instructions
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+%Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-[Link](url) and ![Image](src)
-```
+%```markdown
+%Syntax highlighted code block
+
+%# Header 1
+%## Header 2
+%### Header 3
+
+%- Bulleted
+%- List
+
+%1. Numbered
+%2. List
+
+%**Bold** and _Italic_ and `Code` text
+
+%[Link](url) and ![Image](src)
+%```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
