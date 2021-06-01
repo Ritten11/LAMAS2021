@@ -21,7 +21,7 @@ We are going to model the Resistance game with the help of Dynamic Epistemic Log
 As the game proceeds, the model is simplified as the agents learn from the public annoucements given at the end of each misssion. 
 
 ### Example run-through 
-For a game with five agents <img src="https://render.githubusercontent.com/render/math?math= A = \{1,2,3,4,5\}">, where agent 1 and 2 are spies, and the rest are part of the resistance, the real world is <img src="https://render.githubusercontent.com/render/math?math=s_1, s_2">. Agent 1 and 2 are aware of each other's identities. This is equivalent to a private annoucement between the two agents. Therefore, they are already aware of the real state of the model. This means that there are only reflexive relation arrows for agent 1 and agent 2. The resistance agents cannot distinguish between worlds. This is illustrated in the model below.
+For a game with five agents ![A = \{1,2,3,4,5\}](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+A+%3D+%5C%7B1%2C2%2C3%2C4%2C5%5C%7D), where agent 1 and 2 are spies, and the rest are part of the resistance, the real world is <img src="https://render.githubusercontent.com/render/math?math=s_1, s_2">. Agent 1 and 2 are aware of each other's identities. This is equivalent to a private annoucement between the two agents. Therefore, they are already aware of the real state of the model. This means that there are only reflexive relation arrows for agent 1 and agent 2. The resistance agents cannot distinguish between worlds. This is illustrated in the model below.
 
 ![Image](spiesKnow.png)
 
