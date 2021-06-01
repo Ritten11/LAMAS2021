@@ -36,7 +36,7 @@ Since there are two agents that are spies and the annoucement only provides hesi
 The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, $Ks_1$, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
 
 On mission 2, agents 3, 4 and 5 all play a pass card as they are all part of the resistance. This means that the mission passes and the resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public annoucement made is 
-<img src="https://latex.codecogs.com/gif.latex?[\neg s_1 \wedge \neg s_2 \wedge \neg s_3] " />
+<img src="https://render.githubusercontent.com/render/math?math=[\neg s_1 \wedge \neg s_2 \wedge \neg s_3]">
 
 I think you should use an
 `<addr>` element here instead.
