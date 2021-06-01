@@ -14,20 +14,20 @@ For our project, we are going to implement a multi-agent simulation based on the
 
 
 ## Model 
-We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents <img src="https://render.githubusercontent.com/render/math?math= A = {1,2,3,4,5}">. Out of these agents, two agents are spies which we can denote by s_i meaning that agent i is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below. 
+We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents <img src="https://render.githubusercontent.com/render/math?math= A =\{1,2,3,4,5\}">. Out of these agents, two agents are spies which we can denote by s_i meaning that agent i is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below. 
 
 *insert initial model image here*
 
 As the game proceeds, the model is simplified as the agents learn from the public annoucements given at the end of each misssion. 
 
 ### Example run-through 
-For a game with five agents <img src="https://render.githubusercontent.com/render/math?math= A = {1,2,3,4,5}">, where agent 1 and 2 are spies, and the rest are part of the resistance, the real world is <img src="https://render.githubusercontent.com/render/math?math=s_1, s_2">. Agent 1 and 2 are aware of each other's identities. This is equivalent to a private annoucement between the two agents. Therefore, they are already aware of the real state of the model. This means that there are only reflexive relation arrows for agent 1 and agent 2. The resistance agents cannot distinguish between worlds. This is illustrated in the model below.
+For a game with five agents <img src="https://render.githubusercontent.com/render/math?math= A = \{1,2,3,4,5\}">, where agent 1 and 2 are spies, and the rest are part of the resistance, the real world is <img src="https://render.githubusercontent.com/render/math?math=s_1, s_2">. Agent 1 and 2 are aware of each other's identities. This is equivalent to a private annoucement between the two agents. Therefore, they are already aware of the real state of the model. This means that there are only reflexive relation arrows for agent 1 and agent 2. The resistance agents cannot distinguish between worlds. This is illustrated in the model below.
 
 ![Image](spiesKnow.png)
 
 The mission leader is chosen at random: agent 4 is the mission leader and must propose a mission team. For mission 1, two players make up the mission team. Since agent 4 has not learnt anything about the identities of the other agents, they choose two players at random for the first mission: agent 1 and agent 5. Now the other agents must use their knowledge to either vote for or against this mission team. Since none of the resistance players know of the identity of agent 1, they will vote for the mission team. Also, the spies want a spy to be on a mission, so they will vote for the mission team. Therefore, the mission team is accepted and agent 1 and agent 5 go on the mission. 
 
-On mission 1, agent 1 plays a fail card since they are a spy, and agent 5 plays a pass card sicne they are part of the resistance. As one fail card was played, the mission failed. The spies recieve one point. This leads to the conclusion that either agent 1 is a spy or agent 5 is a spy. Therefore, the public annoucement made is <img src="https://render.githubusercontent.com/render/math?math=[s1 V s5]">
+On mission 1, agent 1 plays a fail card since they are a spy, and agent 5 plays a pass card sicne they are part of the resistance. As one fail card was played, the mission failed. The spies recieve one point. This leads to the conclusion that either agent 1 is a spy or agent 5 is a spy. Therefore, the public annoucement made is <img src="https://render.githubusercontent.com/render/math?math=[s1 \land s5]">
 
 Since there are two agents that are spies and the annoucement only provides hesitant information about the identity of agent 1 and agent 5, no states are removed from the model. However, agent 5 has learned something important from the mission. They know that agent 1 played the fail card, since agent 1 was the only other agent on the mission. Therefore, agent 5 knows that agent 1 is a spy. This means that the relations for agent 5 can be updated to the model illustrated below. 
 
