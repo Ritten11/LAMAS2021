@@ -14,7 +14,7 @@ For our project, we are going to implement a multi-agent simulation based on the
 
 
 ## Model 
-We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents <img src="https://render.githubusercontent.com/render/math?math= A =\{1,2,3,4,5\}">. Out of these agents, two agents are spies which we can denote by s_i meaning that agent i is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below. 
+We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents ![A = \{1,2,3,4,5\}](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+A+%3D+%5C%7B1%2C2%2C3%2C4%2C5%5C%7D). Out of these agents, two agents are spies which we can denote by s_i meaning that agent i is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below. 
 
 *insert initial model image here*
 
@@ -33,7 +33,7 @@ Since there are two agents that are spies and the annoucement only provides hesi
 
 ![Image](agent5Knows.png)
 
-The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, <img src="https://render.githubusercontent.com/render/math?math= $Ks_1$">, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
+The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, <img src="https://render.githubusercontent.com/render/math?math= Ks_1">, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
 
 On mission 2, agents 3, 4 and 5 all play a pass card as they are all part of the resistance. This means that the mission passes and the resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public annoucement made is 
 <img src="https://render.githubusercontent.com/render/math?math=[\neg s_3 \wedge \neg s_4 \wedge \neg s_5]">
