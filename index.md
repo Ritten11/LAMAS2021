@@ -10,7 +10,8 @@ In a mission, each person on the team place a card face-down, either a "pass"-ca
 
 Resistance players have to try to deduce who the spies are to ensure that the spies cannot sabotage the missions. The spies have to attempt to keep their identity a secret from the resistance.
 
-For our project, we are going to implement a multi-agent simulation based on the Resistance. We will be using higher-order knowledge and public announcements. Since the game can be rather complex, we will consider a simplified version. *insert simplifications later* Spies only play "fail"-cards ?
+For our project, we are going to implement a multi-agent simulation based on the Resistance. We will be using higher-order knowledge and public announcements. Since the game can be rather complex, we will consider a simplified version. In the games, spies can choose whether to play a "pass" or "fail" card. We will simplify this so that spies can only play "fail"-cards.
+**insert simplifications later, are there more?**
 
 
 ## Model 
@@ -33,7 +34,7 @@ Since there are two agents that are spies and the annoucement only provides hesi
 
 ![Image](agent5Knows.png)
 
-The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, <img src="https://render.githubusercontent.com/render/math?math= Ks_1">, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
+The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, <img src="https://render.githubusercontent.com/render/math?math=Ks_1">, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
 
 On mission 2, agents 3, 4 and 5 all play a pass card as they are all part of the resistance. This means that the mission passes and the resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public annoucement made is 
 <img src="https://render.githubusercontent.com/render/math?math=[\neg s_3 \wedge \neg s_4 \wedge \neg s_5]">
