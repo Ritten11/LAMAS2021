@@ -2,5 +2,17 @@
 
 Running instructions:
 
-Run in terminal:
-Python3 ModelServer.py
+First install the dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+
+
+from the home-directory of the project.
+
+Afterwards run the mesa server with the command:
+
+```bash
+Python3 RunSimulation.py
+```
