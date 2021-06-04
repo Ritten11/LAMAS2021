@@ -8,7 +8,7 @@ import random
 
 class ResistanceModel(Model):
     """A model with some number of agents."""
-    def __init__(self, N, S, width, height, debugging = False):
+    def __init__(self, N, S, width, height, debugging=False):
         random.seed(42)
         self.debugging = debugging
         self.num_agents = N
