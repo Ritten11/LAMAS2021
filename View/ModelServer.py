@@ -6,8 +6,15 @@ from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
 
 def resistance_agent_portrayal(agent):
-
-    portrayal = {}
+    portrayal = {
+        "Shape": "circle",
+        "Filled": True,
+        "Layer": 1,
+        "r": 0.5,
+        "text": str(agent.KB),
+        "text_color": "white",
+        "scale": 0.8,
+    }
     if type(agent) is Spy:
         portrayal["Color"] = "red"
     elif type(agent) is Resistance:
@@ -15,11 +22,12 @@ def resistance_agent_portrayal(agent):
     else:
         print("Class of current agent is not defined....")
         raise TypeError
-
-    portrayal["Shape"] = "circle"
-    portrayal["Filled"] = True
-    portrayal["Layer"] = 1
-    portrayal["r"] = 0.5
+    #
+    # portrayal["Shape"] = "circle"
+    # portrayal["Filled"] = True
+    # portrayal["Layer"] = 1
+    # portrayal["r"] = 0.5
+    # portrayal["text"] = str(agent.KB)
 
     return portrayal
 

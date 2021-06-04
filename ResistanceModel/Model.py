@@ -24,6 +24,7 @@ class ResistanceModel(Model):
                 a = Spy(i, self)
             else:
                 a = Resistance(i, self)
+            a.initKB()
             self.schedule.add(a)
             self.grid.place_agent(a, (i+1, 0))
 
