@@ -2,4 +2,5 @@
 
 Running instructions:
 
-Run ModelServer.py
+Run in terminal:
+Python3 ModelServer.py
