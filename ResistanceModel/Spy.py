@@ -1,4 +1,4 @@
-from AbstractAgent import AbstractAgent
+from ResistanceModel.AbstractAgent import AbstractAgent
 
 class Spy(AbstractAgent):
     def __init__(self,unique_id, model):

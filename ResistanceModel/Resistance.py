@@ -1,4 +1,5 @@
-from AbstractAgent import AbstractAgent
+from ResistanceModel.AbstractAgent import AbstractAgent
+
 
 class Resistance(AbstractAgent):
     def __init__(self,unique_id, model):

@@ -1,17 +1,19 @@
 from mesa import Model
 from mesa.time import RandomActivation
-from Spy import Spy
-from Resistance import Resistance
+from mesa.space import MultiGrid
+from ResistanceModel.Spy import Spy
+from ResistanceModel.Resistance import Resistance
 import random
 
 
-class MoneyModel(Model):
+class ResistanceModel(Model):
     """A model with some number of agents."""
-    def __init__(self, N, S, debugging = False):
+    def __init__(self, N, S, width, height, debugging = False):
         random.seed(42)
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S
+        self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
         spies_ids = random.sample(range(self.num_agents), 2)
@@ -23,6 +25,7 @@ class MoneyModel(Model):
             else:
                 a = Resistance(i, self)
             self.schedule.add(a)
+            self.grid.place_agent(a, (i, 1))
 
 
     def step(self):
