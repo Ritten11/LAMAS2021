@@ -18,8 +18,8 @@ def resistance_agent_portrayal(agent):
 
     portrayal["Shape"] = "circle"
     portrayal["Filled"] = True
-    portrayal["Layer"] = 0
-    portrayal["R"] = 0.5
+    portrayal["Layer"] = 1
+    portrayal["r"] = 0.5
 
     return portrayal
 

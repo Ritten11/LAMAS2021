@@ -16,7 +16,7 @@ class ResistanceModel(Model):
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
-        spies_ids = random.sample(range(self.num_agents), 2)
+        spies_ids = random.sample(range(self.num_agents), self.num_spies)
         if debugging:
             print(f"Spies in this model: {spies_ids}")
         for i in range(self.num_agents):
@@ -25,7 +25,7 @@ class ResistanceModel(Model):
             else:
                 a = Resistance(i, self)
             self.schedule.add(a)
-            self.grid.place_agent(a, (i, 1))
+            self.grid.place_agent(a, (i+1, 0))
 
 
     def step(self):
