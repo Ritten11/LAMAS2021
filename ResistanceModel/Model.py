@@ -3,7 +3,7 @@ from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
-from mlsolver.model import Resistance3Agents
+from ResistanceModel.mlsolver.model import Resistance3Agents
 import random
 
 
@@ -21,8 +21,10 @@ class ResistanceModel(Model):
         if debugging:
             print(f"Spies in this model: {spies_ids}")
         for i in range(self.num_agents):
+            print(i)
             if i in spies_ids:
                 a = Spy(i, self)
+                print(f"spy is {i}")
             else:
                 a = Resistance(i, self)
             a.initKB()
@@ -32,7 +34,8 @@ class ResistanceModel(Model):
         self.team_sizes = [2,2,2] # number of agents that go on each mission
         self.mission_leader = None
         self.mission_number = 0
-
+        self.mission_team = []
+        self.state = None
         self.running = True
 
     def set_mission_leader(self):
@@ -40,14 +43,39 @@ class ResistanceModel(Model):
         if self.mission_leader == None:
             self.mission_leader = random.randint(1, self.num_agents)
         else: 
-            self.mission_leader = self.mission_leader + 1 if self.mission_leader < self.num_agents else 1
+            self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents-1) else 0
 
     def step(self):
         '''Advance the model by one step.'''
-        self.mission_number += 1
-        self.set_mission_leader()
-        print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}")
-        self.schedule.step()
+        if self.state == None:
+            self.state = "choose_team"
+        
+        if self.state == "choose_team":
+            self.mission_number += 1
+            self.set_mission_leader()
+            print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}")
+            self.schedule.step()
+            self.state = "vote"
+
+        elif self.state == "vote":
+            self.schedule.step()
+            self.state = "go_on_mission"
+
+        elif self.state == "go_on_mission":
+            self.schedule.step()
+            self.state = "play"
+
+        elif self.state == "play":
+            self.schedule.step()
+            self.state = "update_knowledge"
+
+        elif self.state == "update_knowledge":
+            self.schedule.step()
+            self.state = "choose_team"
+        print(f"state is {self.state}")
+
+        
+        
 
 
 
