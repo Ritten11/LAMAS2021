@@ -43,7 +43,7 @@ On mission 2, agents 3, 4 and 5 all play a pass card as they are all part of the
 
 This public annoucement drastically reduces the model. The worlds with _s<sub>3</sub>_, _s<sub>4</sub>_ or _s<sub>5</sub>_ are removed. This model is illustrated below. 
 
-![Image](reduction.png)
+![Image](/images/reduction.png)
 
 As can be seen, the only world that is left is the real state of the model, _s<sub>1</sub>,s<sub>2</sub>_. In this example, after only two missions the goal has been reached. All agents know the identity of all the other agents. 
 
