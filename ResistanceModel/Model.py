@@ -3,7 +3,7 @@ from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
-from ResistanceModel.mlsolver.model import Resistance3Agents
+from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
 import random
 
 
@@ -23,14 +23,14 @@ class ResistanceModel(Model):
         for i in range(self.num_agents):
             print(i)
             if i in spies_ids:
-                a = Spy(i, self)
-                print(f"spy is {i}")
+                a = Spy(i+1, self)
+                print(f"spy is {i+1}")
             else:
-                a = Resistance(i, self)
+                a = Resistance(i+1, self)
             a.initKB()
             self.schedule.add(a)
             self.grid.place_agent(a, (i+1, 0))
-        self.kripke_model = Resistance3Agents()
+        self.kripke_model = Resistance5Agents()
         self.team_sizes = [2,2,2] # number of agents that go on each mission
         self.mission_leader = None
         self.mission_number = 0
@@ -43,7 +43,7 @@ class ResistanceModel(Model):
         if self.mission_leader == None:
             self.mission_leader = random.randint(1, self.num_agents)
         else: 
-            self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents-1) else 0
+            self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents) else 1
 
     def step(self):
         '''Advance the model by one step.'''

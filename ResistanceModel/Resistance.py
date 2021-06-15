@@ -1,16 +1,18 @@
 from ResistanceModel.AbstractAgent import AbstractAgent
-
+from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 
 class Resistance(AbstractAgent):
-    def __init__(self,unique_id, model):
-        super().__init__(unique_id, model)
+	def __init__(self,unique_id, model):
+		super().__init__(unique_id, model)
 
-    def initKB(self):
-        self.KB.add("p")
+	def initKB(self):
+		formula = str(self.unique_id)
+		print(formula)
+		self.KB.add("p")
 
-    def updateKB(self):
-        print(f"Still needs to be implemented")
+	def updateKB(self):
+		print(f"Still needs to be implemented")
 
-    def updateMissionPreference(self):
-        print(f"Still needs to be updated")
+	def updateMissionPreference(self):
+		print(f"Still needs to be updated")
 

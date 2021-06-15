@@ -59,14 +59,14 @@ class Resistance3Agents:
 
     def __init__(self):
         worlds = [
-            World('s1', {'s1': True, 's2': False, 's3': False}),
-            World('s2', {'s1': False, 's2': True, 's3': False}),
-            World('s3', {'s1': False, 's2': False, 's3': True})
+            World('1', {'1': True, '2': False, '3': False}),
+            World('2', {'1': False, '2': True, '3': False}),
+            World('3', {'1': False, '2': False, '3': True})
             ]
         relations = {
-            '1': {('s2', 's3'), ('s3', 's2')},
-            '2': {('s1', 's3'), ('s3', 's1')},
-            '3': {('s1', 's2'), ('s2', 's1')}
+            '1': {('2', '3'), ('3', '2')},
+            '2': {('1', '3'), ('3', '1')},
+            '3': {('1', '2'), ('2', '1')}
         }
         relations.update(add_reflexive_edges(worlds, relations))
         self.ks = KripkeStructure(worlds, relations)
@@ -77,10 +77,55 @@ class Resistance5Agents:
     """
     knowledge_base = []
 
-    def __init__(self):
-        worlds = []
+    def __init__(self, N = 5):
+        worlds, kripke_worlds = self.create_worlds(N)
 
+        relations = self.create_relations(worlds, N)
+
+        relations.update(add_reflexive_edges(kripke_worlds, relations))
+        relations.update(add_symmetric_edges(relations))
+        self.ks = KripkeStructure(kripke_worlds, relations)
+
+
+    def create_worlds(self, N):
+        worlds = []
+        for one in range(1, N+1):
+            for two in range(1, N+1):
+                if one != two and (str(two)+str(one)) not in worlds: 
+                    world = str(one)+str(two)
+                    worlds.append(world)
+        world_truths = []
+        for world in worlds:
+            diction = {}
+            #world_truths[world] = {p: True for p in world}
+            for agent in range(1, N+1):
+                if str(agent) not in world:
+                    diction[str(agent)] = False
+                else:
+                    diction[str(agent)] = True
+            world_truths.append(diction)
+
+        kripke_worlds = []
+        for i, world in enumerate(worlds):
+            kripke_worlds.append(World(world, world_truths[i]))
+        return worlds, kripke_worlds
+
+    def create_relations(self, worlds, N):
         relations = {}
+        for agent in range(1,N+1):
+            relations[str(agent)] = []
+
+        for agent in range(1, N+1):
+            for world1 in worlds:
+                for world2 in worlds:
+                    if world1 != world2:
+                        if str(agent) in world1 and str(agent) in world2 and (world2, world1) not in relations[str(agent)]:
+                            relations[str(agent)].append((world1,world2))
+                        if str(agent) not in world1 and str(agent) not in world2 and (world2, world1) not in relations[str(agent)]:
+                            relations[str(agent)].append((world1,world2))
+        for x in relations:
+            relations[x] = set(relations[x])
+        return relations
 
 
 def add_symmetric_edges(relations):
