@@ -26,7 +26,7 @@ class ModelServer:
             "Filled": True,
             "Layer": 1,
             "r": 0.5,
-            "text": str(agent.KB),
+            "text": str(agent.unique_id),
             "text_color": "white",
             "scale": 0.8,
         }

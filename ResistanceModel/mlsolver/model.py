@@ -86,7 +86,6 @@ class Resistance5Agents:
         relations.update(add_symmetric_edges(relations))
         self.ks = KripkeStructure(kripke_worlds, relations)
 
-
     def create_worlds(self, N):
         worlds = []
         for one in range(1, N+1):

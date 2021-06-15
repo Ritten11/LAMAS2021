@@ -4,6 +4,7 @@ from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
 from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
+from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
 
 
@@ -21,7 +22,7 @@ class ResistanceModel(Model):
         if debugging:
             print(f"Spies in this model: {spies_ids}")
         for i in range(self.num_agents):
-            print(i)
+            #print(i)
             if i in spies_ids:
                 a = Spy(i+1, self)
                 print(f"spy is {i+1}")
@@ -36,6 +37,7 @@ class ResistanceModel(Model):
         self.mission_number = 0
         self.mission_team = []
         self.state = None
+        self.annoucement = None
         self.running = True
 
     def set_mission_leader(self):
@@ -67,16 +69,28 @@ class ResistanceModel(Model):
 
         elif self.state == "play":
             self.schedule.step()
+            self.annouce_mission_result()
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
+            
             self.schedule.step()
             self.state = "choose_team"
         print(f"state is {self.state}")
 
-        
-        
+    def annouce_mission_result(self):
+        played = []
+        for agent in self.schedule.agents:
+            if agent.card != None:
+                played.append(agent.card)
 
-
-
+        if "Fail" not in played:
+            temp = [Not(Atom(str(a))) for a in self.mission_team]
+            self.annoucement = And(temp[0], temp[1])
+        if "Fail" in played and "Pass" in played:
+            temp = [Atom(str(a)) for a in self.mission_team]
+            self.annoucement = Or(temp[0], temp[1])
+        if "Pass" not in played:
+            temp = [Atom(str(a)) for a in self.mission_team]
+            self.annouce_mission_result = And(temp[0], temp[1])
 
