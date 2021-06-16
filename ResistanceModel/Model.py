@@ -11,7 +11,7 @@ import random
 class ResistanceModel(Model):
     """A model with some number of agents."""
     def __init__(self, N, S, width, height, debugging=False):
-        random.seed(42) # I think we want to change the seed 
+        random.seed(42)  # I think we want to change the seed
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S
@@ -32,12 +32,12 @@ class ResistanceModel(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i+1, 0))
         self.kripke_model = Resistance5Agents()
-        self.team_sizes = [2,2,2] # number of agents that go on each mission
+        self.team_sizes = [2, 2, 2]  # number of agents that go on each mission
         self.mission_leader = None
         self.mission_number = 0
         self.mission_team = []
         self.state = None
-        self.annoucement = None
+        self.announcement = None
         self.running = True
 
     def set_mission_leader(self):
@@ -69,7 +69,7 @@ class ResistanceModel(Model):
 
         elif self.state == "play":
             self.schedule.step()
-            self.annouce_mission_result()
+            self.announce_mission_result()
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
@@ -78,7 +78,7 @@ class ResistanceModel(Model):
             self.state = "choose_team"
         print(f"state is {self.state}")
 
-    def annouce_mission_result(self):
+    def announce_mission_result(self):
         played = []
         for agent in self.schedule.agents:
             if agent.card != None:
@@ -86,11 +86,11 @@ class ResistanceModel(Model):
 
         if "Fail" not in played:
             temp = [Not(Atom(str(a))) for a in self.mission_team]
-            self.annoucement = And(temp[0], temp[1])
+            self.announcement = And(temp[0], temp[1])
         if "Fail" in played and "Pass" in played:
             temp = [Atom(str(a)) for a in self.mission_team]
-            self.annoucement = Or(temp[0], temp[1])
+            self.announcement = Or(temp[0], temp[1])
         if "Pass" not in played:
             temp = [Atom(str(a)) for a in self.mission_team]
-            self.annouce_mission_result = And(temp[0], temp[1])
+            self.announcement = And(temp[0], temp[1])
 

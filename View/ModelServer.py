@@ -8,13 +8,13 @@ from ResistanceModel.Resistance import Resistance
 
 class ModelServer:
     def __init__(self):
-        self.grid_width = 5
+        self.grid_width = 8
         self.grid_height = 5
         canvas_element = CanvasGrid(self.resistance_agent_portrayal, self.grid_width, self.grid_height, 500, 500)
         self.server = ModularServer(ResistanceModel,
                                     [canvas_element],
                                     "Resistance Model",
-                                    {"N": 3, "S": 1, "width": self.grid_width, "height": self.grid_height})
+                                    {"N": 5, "S": 2, "width": self.grid_width, "height": self.grid_height})
         self.server.port = 8521  # The default
 
     def run_server(self):

@@ -83,7 +83,7 @@ class Resistance5Agents:
         relations = self.create_relations(worlds, N)
 
         relations.update(add_reflexive_edges(kripke_worlds, relations))
-        relations.update(add_symmetric_edges(relations))
+        relations.update(add_symmetric_edges(relations))  # does the update function replace the previous relations?
         self.ks = KripkeStructure(kripke_worlds, relations)
 
     def create_worlds(self, N):
@@ -148,5 +148,5 @@ def add_reflexive_edges(worlds, relations):
         result_agents = agents_relations.copy()
         for world in worlds:
             result_agents.add((world.name, world.name))
-            result[agent] = result_agents
+        result[agent] = result_agents
     return result
