@@ -15,14 +15,14 @@ For our project, we implement a multi-agent simulation based on the Resistance. 
 
 
 ## Model 
-We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents A = {1,2,3,4,5}. Out of these agents, two agents are spies which we can denote by s_i meaning that agent i is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below. 
+We are going to model the Resistance game with the help of Dynamic Epistemic Logic. With five players we have a set of five agents A = {1,2,3,4,5}. Out of these agents, two agents are spies which we can denote by _s<sub>i/sub>_ meaning that agent _i_ is a spy. The worlds of the Kripke model will consist of every combination of spy pairs, resulting in 10 initial worlds. The initial model is shown below, where the reflexive relations are omitted for clarity. As can be seen from this model, the agents are only aware of their own identity.
 
 ![Image](/images/1main-model.jpg)
 
-As the game proceeds, the model is simplified as the agents learn from the public announcements given at the end of each mission. 
+As the game proceeds, the model is simplified as the agents learn from the public announcements given at the end of each mission.
 
 ### Example run-through 
-For a game with five agents A = {1,2,3,4,5}, where agent _1_ and _2_ are spies, and the rest are part of the resistance, the real world is s<sub>1</sub>,s<sub>2</sub>. Agent 1 and 2 are aware of each other's identities. Therefore, they are already aware of the real state of the model. This means that there are only reflexive relation arrows for agent 1 and agent 2. The resistance agents cannot distinguish between worlds. This is illustrated in the model below.
+For a game with five agents A = {1,2,3,4,5}, where agent 1 and 2 are spies, and the rest are part of the resistance, the real world is _s<sub>1</sub>,s<sub>2</sub>_. Agent 1 and 2 are aware of each other's identities. Therefore, they are already aware of the real state of the model, whereas the resistance agents are only aware of their own identity. This is illustrated in the model below.
 
 ![Image](/images/2spies-known.jpg)
 
@@ -32,20 +32,18 @@ On mission 1, agent 1 plays a fail card since they are a spy, and agent 5 plays 
 
 ![Image](/images/3announcement.jpg)
 
-The announcement provides some information about the identity of agent 1 and agent 5. However, agent 5 has learned something important from the mission. They know that agent 1 played the fail card, since agent 1 was the only other agent on the mission. Therefore, agent 5 knows that agent 1 is a spy. This means that the relations for agent 5 can be updated to the model illustrated below, which results in state _s<sub>3</sub>,s<sub>4</sub>_ being removed from the model:
+As can been seen from the updated model, worlds in which neither agent 1 nor agent 5 is a spy are removed from the model. From this mission agent 5 knows that agent 1 played the fail card, since agent 1 was the only other agent on the mission. Therefore, agent 5 knows that agent 1 is a spy. Also, both spies, agent 1 and agent 2, now know that agent 5 knows that agent 1 is a spy. 
 
-![Image](/images/4agent5knows.jpg)
-
-The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, _Ks<sub>1</sub>_, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3 agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
+The next mission leader is chosen as the next player: agent 5. Mission 2 requires a three player team. Since agent 5 knows that agent 1 is a spy, _K<sub>5</sub>s<sub>1</sub>_, they will not include agent 5 in the mission team. Agent 5 does not know anything about the identity of the other players, so they choose three players from the remaining randomly. The proposed team is agent 3, agent 4 and agent 5. Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the resistance, they will both vote against this mission team. However, agents 3, 4 and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead. 
 
 On mission 2, agents 3, 4 and 5 all play a pass card as they are all part of the resistance. This means that the mission passes and the resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public annoucement made is 
 <img src="https://render.githubusercontent.com/render/math?math=[\neg s_3 \wedge \neg s_4 \wedge \neg s_5]">
 
 This public annoucement drastically reduces the model. The worlds with _s<sub>3</sub>_, _s<sub>4</sub>_ or _s<sub>5</sub>_ are removed. This model is illustrated below. 
 
-![Image](/images/reduction.png)
+![Image](/images/5reduction.png)
 
-As can be seen, the only world that is left is the real state of the model, _s<sub>1</sub>,s<sub>2</sub>_. In this example, after only two missions the goal has been reached. All agents know the identity of all the other agents. 
+As can be seen, the only world that is left is the real state of the model, _s<sub>1</sub>,s<sub>2</sub>_. This means that all agents are aware of the real state of the world and the resistance players have figured out the itendity of the spies. In this example, after only two missions the goal has been reached. All agents know the identity of all the other agents.
 
 ## Theory
 
