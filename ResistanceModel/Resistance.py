@@ -1,5 +1,6 @@
 from ResistanceModel.AbstractAgent import AbstractAgent
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
+import random
 
 class Resistance(AbstractAgent):
 	def __init__(self,unique_id, model):
@@ -10,17 +11,18 @@ class Resistance(AbstractAgent):
 		print(formula)
 		self.KB.add("p")
 		self.card = None
+		self.vote = None
 
 	def step(self):
 		if self.model.state == "choose_team":
 			if self.model.mission_leader == self.unique_id:
 				self.model.grid.move_agent(self, (self.unique_id, 2))
-				#self.chooseTeam()
-				self.model.mission_team = [1,2]
+				self.model.mission_team = self.choose_team()
 				print(f"team is {self.model.mission_team}")
 
 		if self.model.state == "vote":
-		   print(f"not sure whether this will be different for resistance and spy")
+			self.vote = "Yes" # for testing
+			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
 			if self.unique_id in self.model.mission_team:
@@ -36,6 +38,19 @@ class Resistance(AbstractAgent):
 			self.model.grid.move_agent(self, (self.unique_id, 0))
 			self.updateKB()
 			self.updateMissionPreference()
+
+	def choose_team(self):
+		mission_team = []
+		# in the first mission the resistance agent trusts themselves but knows nothing about other agents
+		if self.model.mission_number == 1:
+			mission_team.append(self.unique_id)
+			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
+				temp = random.choice(range(1, self.model.num_agents+1))
+				if temp != self.unique_id:
+					mission_team.append(temp)
+		else: 
+			mission_team = [1,2]
+		return mission_team
 
 	def updateKB(self):
 		print(f"Still needs to be implemented")

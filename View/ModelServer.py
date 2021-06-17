@@ -8,7 +8,7 @@ from ResistanceModel.Resistance import Resistance
 
 class ModelServer:
     def __init__(self):
-        self.grid_width = 8
+        self.grid_width = 7
         self.grid_height = 5
         canvas_element = CanvasGrid(self.resistance_agent_portrayal, self.grid_width, self.grid_height, 500, 500)
         self.server = ModularServer(ResistanceModel,

@@ -18,21 +18,22 @@ class ResistanceModel(Model):
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
-        spies_ids = random.sample(range(self.num_agents), self.num_spies)
+        self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
+        self.spies_ids = [s+1 for s in self.spies_ids]
         if debugging:
-            print(f"Spies in this model: {spies_ids}")
-        for i in range(self.num_agents):
+            print(f"Spies in this model: {self.spies_ids}")
+        for i in range(1,self.num_agents+1):
             #print(i)
-            if i in spies_ids:
-                a = Spy(i+1, self)
-                print(f"spy is {i+1}")
+            if i in self.spies_ids:
+                a = Spy(i, self)
+                print(f"spy is {i}")
             else:
-                a = Resistance(i+1, self)
+                a = Resistance(i, self)
             a.initKB()
             self.schedule.add(a)
-            self.grid.place_agent(a, (i+1, 0))
+            self.grid.place_agent(a, (i, 0))
         self.kripke_model = Resistance5Agents()
-        self.team_sizes = [2, 2, 2]  # number of agents that go on each mission
+        self.team_sizes = [2, 3, 2, 3, 3]  # number of agents that go on each mission
         self.mission_leader = None
         self.mission_number = 0
         self.mission_team = []
@@ -61,7 +62,7 @@ class ResistanceModel(Model):
 
         elif self.state == "vote":
             self.schedule.step()
-            self.state = "go_on_mission"
+            self.state = "go_on_mission" if self.check_vote_passed() else "choose_team"
 
         elif self.state == "go_on_mission":
             self.schedule.step()
@@ -78,19 +79,43 @@ class ResistanceModel(Model):
             self.state = "choose_team"
         print(f"state is {self.state}")
 
+
+    def check_vote_passed(self):
+        votes = []
+        for agent in self.schedule.agents:
+            votes.append(agent.vote)
+        return True if votes.count("Yes") >= votes.count("No") else False
+    
+
     def announce_mission_result(self):
         played = []
         for agent in self.schedule.agents:
             if agent.card != None:
                 played.append(agent.card)
 
+        # maybe we want another one where it counts the number of fail cards ? cause with 5 agents 
+        # there could be 2 fails and 1 pass
         if "Fail" not in played:
             temp = [Not(Atom(str(a))) for a in self.mission_team]
             self.announcement = And(temp[0], temp[1])
-        if "Fail" in played and "Pass" in played:
+            print("fail not in")
+        if "Fail" in played and "Pass" in played: 
             temp = [Atom(str(a)) for a in self.mission_team]
             self.announcement = Or(temp[0], temp[1])
+            print("fail and pass")
         if "Pass" not in played:
             temp = [Atom(str(a)) for a in self.mission_team]
             self.announcement = And(temp[0], temp[1])
+            print("pass not in")
+        print(self.announcement)
+
+
+        print("before announcement:")
+        print(f"worlds: {[world.name for world in self.kripke_model.ks.worlds]}")
+        print(self.kripke_model.ks.relations)
+
+        self.kripke_model.ks = self.kripke_model.ks.solve(self.announcement)
+        print("After announcement:")
+        print(f"worlds: {[world.name for world in self.kripke_model.ks.worlds]}")
+        print(self.kripke_model.ks.relations)
 
