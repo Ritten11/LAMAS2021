@@ -18,8 +18,8 @@ class ResistanceModel(Model):
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
-        self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
-        self.spies_ids = [s+1 for s in self.spies_ids]
+        #self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
+        self.spies_ids = [1,2]#[s+1 for s in self.spies_ids]
         if debugging:
             print(f"Spies in this model: {self.spies_ids}")
         for i in range(1,self.num_agents+1):
@@ -45,6 +45,8 @@ class ResistanceModel(Model):
         ''' Set the mission leader for the round '''
         if self.mission_leader == None:
             self.mission_leader = random.randint(1, self.num_agents)
+            self.mission_leader = 4
+
         else: 
             self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents) else 1
 
@@ -58,11 +60,14 @@ class ResistanceModel(Model):
             self.set_mission_leader()
             print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}")
             self.schedule.step()
+            
             self.state = "vote"
 
         elif self.state == "vote":
             self.schedule.step()
             self.state = "go_on_mission" if self.check_vote_passed() else "choose_team"
+            for agent in self.schedule.agents:
+                agent.card = None
 
         elif self.state == "go_on_mission":
             self.schedule.step()
@@ -89,23 +94,31 @@ class ResistanceModel(Model):
 
     def announce_mission_result(self):
         played = []
+        print(f"played: {played}")
         for agent in self.schedule.agents:
             if agent.card != None:
                 played.append(agent.card)
-
+        
+        print(f"played: {played}")
         # maybe we want another one where it counts the number of fail cards ? cause with 5 agents 
         # there could be 2 fails and 1 pass
         if "Fail" not in played:
             temp = [Not(Atom(str(a))) for a in self.mission_team]
             self.announcement = And(temp[0], temp[1])
+            if self.team_sizes[self.mission_number - 1] == 3:
+                self.announcement = And(self.announcement, temp[2])
             print("fail not in")
-        if "Fail" in played and "Pass" in played: 
+        elif "Fail" in played and "Pass" in played: 
             temp = [Atom(str(a)) for a in self.mission_team]
             self.announcement = Or(temp[0], temp[1])
+            if self.team_sizes[self.mission_number - 1] == 3:
+                self.announcement = Or(self.announcement, temp[2])
             print("fail and pass")
-        if "Pass" not in played:
+        elif "Pass" not in played:
             temp = [Atom(str(a)) for a in self.mission_team]
             self.announcement = And(temp[0], temp[1])
+            if self.team_sizes[self.mission_number - 1] == 3:
+                self.announcement = And(self.announcement, temp[2])
             print("pass not in")
         print(self.announcement)
 

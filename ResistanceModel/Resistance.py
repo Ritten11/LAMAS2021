@@ -48,8 +48,24 @@ class Resistance(AbstractAgent):
 				temp = random.choice(range(1, self.model.num_agents+1))
 				if temp != self.unique_id:
 					mission_team.append(temp)
-		else: 
-			mission_team = [1,2]
+			mission_team = [1,5]
+		else:
+			dont_choose = []
+
+			for agent in range(1, self.model.num_agents+1):
+				print(f"agent: {agent}")
+				formula = And(Box_a(str(self.unique_id), Atom(str(agent))), Not(Atom(str(self.unique_id))))
+				nodes = self.model.kripke_model.ks.nodes_not_follow_formula(formula)
+				if len(nodes) < len(self.model.kripke_model.ks.worlds):
+					dont_choose.append(agent)
+				print(nodes)
+
+
+			mission_team.append(self.unique_id) # agent still trusts themselves
+			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
+				temp = random.choice(range(1, self.model.num_agents+1))
+				if temp != self.unique_id and temp not in dont_choose:
+					mission_team.append(temp)
 		return mission_team
 
 	def updateKB(self):
