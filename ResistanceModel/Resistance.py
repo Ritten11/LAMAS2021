@@ -14,38 +14,38 @@ class Resistance(AbstractAgent):
 		self.vote = None
 
 	def step(self):
-		if self.model.state == "choose_team":
-			if self.model.mission_leader == self.unique_id:
-				self.model.grid.move_agent(self, (self.unique_id, 2))
-				self.model.mission_team = self.choose_team()
-				print(f"team is {self.model.mission_team}")
+		if self.res_model.state == "choose_team":
+			if self.res_model.mission_leader == self.unique_id:
+				self.res_model.grid.move_agent(self, (self.unique_id, 2))
+				self.res_model.mission_team = self.choose_team()
+				print(f"team is {self.res_model.mission_team}")
 
-		if self.model.state == "vote":
+		if self.res_model.state == "vote":
 			self.vote = "Yes" # for testing
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
-		if self.model.state == "go_on_mission":
-			if self.unique_id in self.model.mission_team:
-				self.model.grid.move_agent(self, (self.unique_id, 4))
+		if self.res_model.state == "go_on_mission":
+			if self.unique_id in self.res_model.mission_team:
+				self.res_model.grid.move_agent(self, (self.unique_id, 4))
 
-		if self.model.state == "play":
-			if self.unique_id in self.model.mission_team:
+		if self.res_model.state == "play":
+			if self.unique_id in self.res_model.mission_team:
 				self.card = "Pass"
 				print(f"{self.card} card is played by {self.unique_id}")
 		   
 
-		if self.model.state == "update_knowledge":
-			self.model.grid.move_agent(self, (self.unique_id, 0))
+		if self.res_model.state == "update_knowledge":
+			self.res_model.grid.move_agent(self, (self.unique_id, 0))
 			self.updateKB()
 			self.updateMissionPreference()
 
 	def choose_team(self):
 		mission_team = []
 		# in the first mission the resistance agent trusts themselves but knows nothing about other agents
-		if self.model.mission_number == 1:
+		if self.res_model.mission_number == 1:
 			mission_team.append(self.unique_id)
-			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
-				temp = random.choice(range(1, self.model.num_agents+1))
+			while len(mission_team) != self.res_model.team_sizes[self.res_model.mission_number - 1]:
+				temp = random.choice(range(1, self.res_model.num_agents + 1))
 				if temp != self.unique_id:
 					mission_team.append(temp)
 		else: 

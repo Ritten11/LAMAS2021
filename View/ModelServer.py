@@ -1,7 +1,7 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 
-from ResistanceModel.Model import ResistanceModel
+from ResistanceModel.ResistanceModel import ResistanceModel
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
 
