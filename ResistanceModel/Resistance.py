@@ -62,41 +62,36 @@ class Resistance(AbstractAgent):
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
 			self.updateKB()
-			self.updateMissionPreference()
 
 	# TODO: Make sure that mission_team is unique members
 	def choose_team(self):
 		mission_team = []
 		# in the first mission the resistance agent trusts themselves but knows nothing about other agents
-		if self.model.mission_number == 1:
-			mission_team.append(self.unique_id)
-			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
-				temp = random.choice(range(1, self.model.num_agents+1))
-				if temp not in mission_team:
-					mission_team.append(temp)
-			#mission_team = [1,5] # for testing
-		else:
-			dont_choose = []
+		'''if self.model.mission_number == 1:
+									mission_team.append(self.unique_id)
+									while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
+										temp = random.choice(range(1, self.model.num_agents+1))
+										if temp not in mission_team:
+											mission_team.append(temp)
+									#mission_team = [1,5] # for testing
+								else:'''
+		dont_choose = []
 
-			for agent in range(1, self.model.num_agents+1):
-				print(f"agent: {agent}")
-				formula = And(Box_a(str(self.unique_id), Atom(str(agent))), Not(Atom(str(self.unique_id))))
-				nodes = self.model.kripke_model.ks.nodes_not_follow_formula(formula)
-				if len(nodes) < len(self.model.kripke_model.ks.worlds):
-					dont_choose.append(agent)
-				print(nodes)
+		for agent in range(1, self.model.num_agents+1):
+			#print(f"agent: {agent}")
+			formula = And(Box_a(str(self.unique_id), Atom(str(agent))), Not(Atom(str(self.unique_id))))
+			nodes = self.model.kripke_model.ks.nodes_not_follow_formula(formula)
+			if len(nodes) < len(self.model.kripke_model.ks.worlds):
+				dont_choose.append(agent)
+			#print(nodes)
 
-			mission_team.append(self.unique_id) # agent still trusts themselves
-			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
-				temp = random.choice(range(1, self.model.num_agents+1))
-				if temp not in mission_team and temp not in dont_choose:
-					mission_team.append(temp)
+		mission_team.append(self.unique_id) # agent always trusts themselves
+		while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
+			temp = random.choice(range(1, self.model.num_agents+1))
+			if temp not in mission_team and temp not in dont_choose:
+				mission_team.append(temp)
 		return mission_team
 
 
 	def updateKB(self):
 		print(f"Still needs to be implemented")
-
-	def updateMissionPreference(self):
-		print(f"Still needs to be updated")
-

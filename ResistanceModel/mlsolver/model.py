@@ -77,7 +77,7 @@ class Resistance5Agents:
     """
     knowledge_base = []
 
-    def __init__(self, N = 5):
+    def __init__(self, N):
         self.worlds, self.kripke_worlds = self.create_worlds(N)
 
         self.relations = self.create_relations(self.worlds, N)
