@@ -40,6 +40,7 @@ class Spy(AbstractAgent):
 			self.updateMissionPreference()
 
 
+	# TODO: Make sure mission team is unique members
 	def choose_team(self):
 		mission_team = []
 		# in the first mission the spy wants any one spy in the mission so that it fails, but not both

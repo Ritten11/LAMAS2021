@@ -21,7 +21,30 @@ class Resistance(AbstractAgent):
 				print(f"team is {self.model.mission_team}")
 
 		if self.model.state == "vote":
-			self.vote = "Yes" # for testing
+			# Checks whether the agent accepts the mission team or not
+			suspicions = [0] * self.model.num_agents
+			relations = self.model.kripke_model.relations[str(self.unique_id)]
+			worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]
+			print(worlds)
+			for agent in self.model.schedule.agents:
+				ids = str(agent.unique_id)
+				idx = agent.unique_id-1
+				if agent.unique_id == self.unique_id:
+					continue
+				else:
+					for world in worlds:
+						if ids in world:
+							suspicions[idx] += 1
+
+			s = 0
+			for a in self.model.mission_team:
+				s += suspicions[a - 1]
+
+			# TODO: Find good condition for this
+			if s < len(worlds):
+				self.vote = "Yes"
+			else:
+				self.vote = "No"
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
@@ -39,6 +62,7 @@ class Resistance(AbstractAgent):
 			self.updateKB()
 			self.updateMissionPreference()
 
+	# TODO: Make sure that mission_team is unique members
 	def choose_team(self):
 		mission_team = []
 		# in the first mission the resistance agent trusts themselves but knows nothing about other agents

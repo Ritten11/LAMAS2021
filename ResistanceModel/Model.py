@@ -33,6 +33,7 @@ class ResistanceModel(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i, 0))
         self.kripke_model = Resistance5Agents()
+        self.true_world = f"{self.spies_ids[0]}{self.spies_ids[1]}"
         self.team_sizes = [2, 3, 2, 3, 3]  # number of agents that go on each mission
         self.mission_leader = None
         self.mission_number = 0
@@ -59,6 +60,8 @@ class ResistanceModel(Model):
             self.mission_number += 1
             self.set_mission_leader()
             print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}")
+            # TODO: Make sure that the choose_team does not always update mission number
+            self.mission_team = self.schedule.agents[self.mission_leader - 1].choose_team()
             self.schedule.step()
             
             self.state = "vote"

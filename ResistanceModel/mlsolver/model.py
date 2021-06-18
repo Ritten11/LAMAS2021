@@ -78,13 +78,13 @@ class Resistance5Agents:
     knowledge_base = []
 
     def __init__(self, N = 5):
-        worlds, kripke_worlds = self.create_worlds(N)
+        self.worlds, self.kripke_worlds = self.create_worlds(N)
 
-        relations = self.create_relations(worlds, N)
+        self.relations = self.create_relations(self.worlds, N)
 
-        relations.update(add_reflexive_edges(kripke_worlds, relations))
-        relations.update(add_symmetric_edges(relations))  # does the update function replace the previous relations?
-        self.ks = KripkeStructure(kripke_worlds, relations)
+        self.relations.update(add_reflexive_edges(self.kripke_worlds, self.relations))
+        self.relations.update(add_symmetric_edges(self.relations))  # does the update function replace the previous relations?
+        self.ks = KripkeStructure(self.kripke_worlds, self.relations)
 
     def create_worlds(self, N):
         worlds = []
