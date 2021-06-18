@@ -70,9 +70,9 @@ class Resistance(AbstractAgent):
 			mission_team.append(self.unique_id)
 			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
 				temp = random.choice(range(1, self.model.num_agents+1))
-				if temp != self.unique_id:
+				if temp not in mission_team:
 					mission_team.append(temp)
-			mission_team = [1,5]
+			#mission_team = [1,5] # for testing
 		else:
 			dont_choose = []
 
