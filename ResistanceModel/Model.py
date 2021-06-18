@@ -36,6 +36,7 @@ class ResistanceModel(Model):
         self.true_world = f"{self.spies_ids[0]}{self.spies_ids[1]}"
         self.team_sizes = [2, 3, 2, 3, 3]  # number of agents that go on each mission
         self.mission_leader = None
+        self.try_leader = 0
         self.mission_number = 1
         self.mission_team = []
         self.state = None
@@ -58,7 +59,9 @@ class ResistanceModel(Model):
         
         if self.state == "choose_team":
             self.set_mission_leader()
-            print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}")
+            # TODO: decide if we will have points cause then after 5 tries the spies get a point
+            self.try_leader += 1
+            print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             # TODO: Make sure that the choose_team does not always update mission number - DONE I think (?)
             self.mission_team = self.schedule.agents[self.mission_leader - 1].choose_team()
             self.schedule.step()
@@ -84,6 +87,7 @@ class ResistanceModel(Model):
             
             self.schedule.step()
             self.mission_number += 1
+            self.try_leader = 0
             self.state = "choose_team"
         print(f"state is {self.state}")
 

@@ -19,6 +19,8 @@ class Spy(AbstractAgent):
 				self.model.grid.move_agent(self, (self.unique_id, 2))
 				self.model.mission_team = self.choose_team()
 				print(f"team is {self.model.mission_team}")
+			else: 
+				self.model.grid.move_agent(self, (self.unique_id, 0))
 
 		if self.model.state == "vote":
 			self.vote = "No" # for testing
