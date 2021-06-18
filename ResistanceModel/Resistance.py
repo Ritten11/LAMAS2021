@@ -84,13 +84,13 @@ class Resistance(AbstractAgent):
 					dont_choose.append(agent)
 				print(nodes)
 
-
 			mission_team.append(self.unique_id) # agent still trusts themselves
 			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
 				temp = random.choice(range(1, self.model.num_agents+1))
-				if temp != self.unique_id and temp not in dont_choose:
+				if temp not in mission_team and temp not in dont_choose:
 					mission_team.append(temp)
 		return mission_team
+
 
 	def updateKB(self):
 		print(f"Still needs to be implemented")
