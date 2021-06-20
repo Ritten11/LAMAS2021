@@ -24,29 +24,26 @@ class Resistance(AbstractAgent):
 
 		if self.model.state == "vote":
 			# Checks whether the agent accepts the mission team or not
-			suspicions = [0] * self.model.num_agents
 			relations = self.model.kripke_model.relations[str(self.unique_id)]
 			worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]
-			print(worlds)
+			s = 0
 			for agent in self.model.schedule.agents:
 				ids = str(agent.unique_id)
-				idx = agent.unique_id-1
 				if agent.unique_id == self.unique_id:
 					continue
 				else:
+					c = 0
 					for world in worlds:
 						if ids in world:
-							suspicions[idx] += 1
+							c += 1
+					if c == len(worlds):
+						s += 1
 
-			s = 0
-			for a in self.model.mission_team:
-				s += suspicions[a - 1]
-
-			# TODO: Find good condition for this
-			if s < len(worlds):
-				self.vote = "Yes"
-			else:
+			if s > 0:
 				self.vote = "No"
+			else:
+				self.vote = "Yes"
+
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
