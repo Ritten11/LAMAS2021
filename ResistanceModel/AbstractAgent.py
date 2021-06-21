@@ -6,7 +6,7 @@ class AbstractAgent(Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
         self.KB = set()
-        self.res_model = model
+        self.model = model
         self.unique_id = unique_id
 
     def step(self):

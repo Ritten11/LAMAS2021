@@ -2,6 +2,7 @@ from ResistanceModel.AbstractAgent import AbstractAgent
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 # from ResistanceModel.ResistanceModel import ResistanceModel
 import random
+import copy
 
 class Spy(AbstractAgent):
 	def __init__(self, unique_id, model):
@@ -15,28 +16,28 @@ class Spy(AbstractAgent):
 		self.vote = None
 
 	def step(self):
-		if self.res_model.state == "choose_team":
-			if self.res_model.mission_leader == self.unique_id:
-				self.res_model.grid.move_agent(self, (self.unique_id, 2))
-				self.res_model.mission_team = self.choose_team()
-				print(f"team is {self.res_model.mission_team}")
+		if self.model.state == "choose_team":
+			if self.model.mission_leader == self.unique_id:
+				self.model.grid.move_agent(self, (self.unique_id, 2))
+				self.model.mission_team = self.choose_team()
+				print(f"team is {self.model.mission_team}")
 
-		if self.res_model.state == "vote":
-			self.vote = self.decide_on_vote()
+		if self.model.state == "vote":
+			self.vote = self.decide_on_vote_2nd_order()
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
-		if self.res_model.state == "go_on_mission":
-			if self.unique_id in self.res_model.mission_team:
-				self.res_model.grid.move_agent(self, (self.unique_id, 4))
+		if self.model.state == "go_on_mission":
+			if self.unique_id in self.model.mission_team:
+				self.model.grid.move_agent(self, (self.unique_id, 4))
 
-		if self.res_model.state == "play":
-			if self.unique_id in self.res_model.mission_team:
+		if self.model.state == "play":
+			if self.unique_id in self.model.mission_team:
 				self.card = "Fail"
 				print(f"{self.card} card is played by {self.unique_id}")
 		   
 
-		if self.res_model.state == "update_knowledge":
-			self.res_model.grid.move_agent(self, (self.unique_id, 0))
+		if self.model.state == "update_knowledge":
+			self.model.grid.move_agent(self, (self.unique_id, 0))
 			self.updateKB()
 			self.updateMissionPreference()
 
@@ -44,11 +45,11 @@ class Spy(AbstractAgent):
 	def choose_team(self):
 		mission_team = []
 		# in the first mission the spy wants any one spy in the mission so that it fails, but not both
-		if self.res_model.mission_number == 1:
-			mission_team.append(random.choice(self.res_model.spies_ids))
-			while len(mission_team) != self.res_model.team_sizes[self.res_model.mission_number - 1]:
-				temp = random.choice(range(1, self.res_model.num_agents + 1))
-				if temp not in self.res_model.spies_ids:
+		if self.model.mission_number == 1:
+			mission_team.append(random.choice(self.model.spies_ids))
+			while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
+				temp = random.choice(range(1, self.model.num_agents + 1))
+				if temp not in self.model.spies_ids:
 					mission_team.append(temp)
 		else: 
 			mission_team = [1,2]
@@ -72,17 +73,35 @@ class Spy(AbstractAgent):
 		if self.number_of_spies_on_team() == 0:
 			return "No"
 		else:
+			formula = Or(Atom(str(self.model.mission_team[0])), Atom(str(self.model.mission_team[1])))
+			kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
+			hypothetical_model = kripke_model_copy.solve(formula)
+			for agent in self.get_non_spies():
+				new_formula = Box_a(agent.unique_id, Atom(str(self.model.spies_ids[1])))
+				new_model = hypothetical_model.solve(new_formula)
+				print(f"Hypothetical: {hypothetical_model.get_power_set_of_worlds()}")
+				print(f"test 2: {new_model.get_power_set_of_worlds()}")
+			# if len(nodes) < len(self.model.kripke_model.ks.worlds):
+			# 	dont_choose.append(agent)
+			# print(nodes)
 			print(f"To be implemented!!! - decide_on_vote_2nd_order(self)")
 			if True:  # Somehow use the mlsolver to see whether an announcement will result in an agent knowing both spies
 				return "Yes"
 
 	def number_of_spies_on_team(self):
-		team = self.res_model.mission_team
+		team = self.model.mission_team
 		number_of_spies = 0
 		for agent in team:
 			if agent in self.model.spies_ids:
 				number_of_spies += 1
 		return number_of_spies
+
+	def get_non_spies(self):
+		non_spies = []
+		for agent in self.model.schedule.agents:
+			if agent.unique_id not in self.model.spies_ids:
+				non_spies.append(agent)
+		return non_spies
 
 
 	def updateKB(self):
