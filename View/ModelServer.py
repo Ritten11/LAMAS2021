@@ -14,7 +14,14 @@ class ModelServer:
         self.server = ModularServer(ResistanceModel,
                                     [canvas_element],
                                     "Resistance Model",
-                                    {"N": 5, "S": 2, "width": self.grid_width, "height": self.grid_height})
+                                    {"N": 5, "S": 2, "width": self.grid_width, "height": self.grid_height, "flag": "spies-dont-reason"})
+        # N = 5 , grid_width = 7
+        # N = 6 , grid_width = 8
+        # "basecase": spies reason, actual team sizes, 5 agents
+        # "spies-dont-reason": spies dont reason, actual team sizes, 5 agents
+        # "6players": spies reason, actual team sizes, 6 agents
+        # "teams2": spies reason, team sizes of 2, 5 agents
+        # "teams3": spies reason, team sizes of 3, 5 agents
         self.server.port = 8521  # The default
 
     def run_server(self):
