@@ -119,8 +119,27 @@ class Spy(AbstractAgent):
 			return vote
 
 	def play_card_2nd_order(self):
+		mission_team = self.model.mission_team
+		if len(mission_team) == 2:
+			formula = Or(Atom(str(mission_team[0])), Atom(str(mission_team[1])))
+		else:
+			formula = Or(Atom(str(mission_team[0])), Atom(str(mission_team[1])), Atom(str(mission_team[2])))
+		kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
+		vote = "Yes"
+		for agent in self.get_non_spies():
+			hypothetical_model = kripke_model_copy.solve(formula)
+			new_formula = Box_a(str(self.unique_id),
+								And(
+									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[0]))),
+									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[1])))))
+			excluded_nodes = hypothetical_model.nodes_not_follow_formula(new_formula)
 
-
+			if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members knows both spies
+				vote = "no"
+			print(f"Results for agent {agent.unique_id} and spy {self.model.spies_ids[1]}:")
+			print(f"Original							: {self.model.kripke_model.ks.get_power_set_of_worlds()}")
+			print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
+			print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
 		return "Fail"
 
 	def number_of_spies_on_team(self):
