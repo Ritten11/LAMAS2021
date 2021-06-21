@@ -105,8 +105,10 @@ class Spy(AbstractAgent):
 			for agent in self.get_non_spies():
 				new_formula = Box_a(agent.unique_id, Atom(str(self.model.spies_ids[1])))
 				new_model = hypothetical_model.solve(new_formula)
-				print(f"Hypothetical: {hypothetical_model.get_power_set_of_worlds()}")
-				print(f"test 2: {new_model.get_power_set_of_worlds()}")
+				print(f"Results for agent {agent.unique_id}:")
+				print(f"Original						: {self.model.kripke_model.ks.get_power_set_of_worlds()}")
+				print(f"Hypothetical					: {hypothetical_model.get_power_set_of_worlds()}")
+				print(f"Worlds in which spies are known	: {new_model.get_power_set_of_worlds()}")
 			# if len(nodes) < len(self.model.kripke_model.ks.worlds):
 			# 	dont_choose.append(agent)
 			# print(nodes)
