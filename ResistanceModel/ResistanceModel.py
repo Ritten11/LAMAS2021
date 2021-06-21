@@ -127,7 +127,7 @@ class ResistanceModel(Model):
         if self.spy_points > self.resisitance_points:
             result = "Spies won"
         else:
-            result: "Resistance won: " + self.identity_revealed
+            result = "Resistance won: " + str(self.identity_revealed)
         return result
 
     def check_vote_passed(self):

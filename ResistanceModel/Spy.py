@@ -134,7 +134,7 @@ class Spy(AbstractAgent):
 									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[1])))))
 			excluded_nodes = hypothetical_model.nodes_not_follow_formula(new_formula)
 
-			if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members knows both spies
+			if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members would know both spies
 				card = "Pass"
 				print(f"Would normally play 'fail' card but now plays a 'Pass' card due to higher order reasoning")
 		return card
