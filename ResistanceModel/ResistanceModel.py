@@ -205,10 +205,3 @@ class ResistanceModel(Model):
             self.identity_revealed = self.mission_number
             print(f"reavealed at {self.identity_revealed}")
 
-    def get_mission_results(self):  # transform the bit-array into the corresponding integer.
-        return 16*self.rounds_won_spies[0] + \
-               8*self.rounds_won_spies[1] + \
-               4*self.rounds_won_spies[2] + \
-               2*self.rounds_won_spies[3] + \
-               self.rounds_won_spies[4]
-

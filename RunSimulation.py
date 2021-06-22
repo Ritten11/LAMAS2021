@@ -35,6 +35,18 @@ args = vars(options)
 # grid = CanvasGrid(agent_portrayal, 24, 9, 1000, 500)
 #
 
+
+def get_identity_revealed(model):
+    return model.identity_revealed
+
+
+def get_mission_results(model):  # transform the bit-array into the corresponding integer.
+    return 16*model.rounds_won_spies[0] + \
+           8*model.rounds_won_spies[1] + \
+           4*model.rounds_won_spies[2] + \
+           2*model.rounds_won_spies[3] + \
+           model.rounds_won_spies[4]
+
 if options.run_mode == 'gui':
     server = ModelServer(N=options.number_of_agents, ps=options.party_size, hok=options.higher_order_knowledge)
 
@@ -52,7 +64,8 @@ elif options.run_mode == 'batch':
                             fixed_params,
                             iterations=options.iterations,
                             max_steps=50,
-                            model_reporters={"identity_revealed": "get_identity_revealed"})  # "rounds_won_spies": "get_mission_results",
+                            model_reporters={"rounds_won_spies": get_mission_results,
+                                             "identity_revealed": get_identity_revealed})
     batch_run.run_all()
     run_data = batch_run.get_model_vars_dataframe()
     print(f"levels rounds_won: {run_data['rounds_won_spies'].unique()}")
@@ -65,7 +78,7 @@ elif options.run_mode == 'batch':
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    with open('results' + os.path.sep + 'output_' + options.number_of_agents + '.json', 'w') as outfile:
+    with open('results' + os.path.sep + 'output_' + str(options.number_of_agents) + '.json', 'w') as outfile:
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
