@@ -24,7 +24,10 @@ class Spy(AbstractAgent):
 				self.model.grid.move_agent(self, (self.unique_id, 0))
 
 		if self.model.state == "vote":
-			self.vote = self.decide_on_vote_0th_order()
+			if self.model.spy_reasons == True:
+				self.vote = self.decide_on_vote_2nd_order()
+			else: # spies dont reason
+				self.vote = self.decide_on_vote_0th_order()
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
@@ -39,41 +42,24 @@ class Spy(AbstractAgent):
 					self.card = self.play_card_0th_order()
 				print(f"{self.card} card is played by {self.unique_id}")
 		   
-
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
 			self.updateKB()
 
 
-	# TODO: Make sure mission team is unique members
 	def choose_team(self):
 		mission_team = []
-		# in the first mission the spy wants any one spy in the mission so that it fails, but not both
-		'''if self.model.mission_number == 1:
-									mission_team.append(random.choice(self.model.spies_ids))
-									while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
-										temp = random.choice(range(1, self.model.num_agents+1))
-										if temp not in self.model.spies_ids:
-											mission_team.append(temp)
-								else: 
-									'''
 		dont_choose = []
-		#knows = []
 		for agent in range(1, self.model.num_agents+1):
 			if agent not in self.model.spies_ids:
-				print(f"agent: {agent}")
 				formula1 = And(Box_a(str(agent), Atom(str(self.model.spies_ids[0]))),Atom(str(self.model.spies_ids[0]))) # agent knows that spy1
 				nodes1 = self.model.kripke_model.ks.nodes_not_follow_formula(formula1)
 				formula2 = And(Box_a(str(agent), Atom(str(self.model.spies_ids[1]))),Atom(str(self.model.spies_ids[1]))) # agent knows that spy2
 				nodes2 = self.model.kripke_model.ks.nodes_not_follow_formula(formula2)
-				print(f"nodes for form1: {nodes1}")
-				print(f"nodes for form2: {nodes2}")
-				if len(nodes1) < len(self.model.kripke_model.ks.worlds):
+				if len(nodes1) < len(self.model.kripke_model.ks.worlds) and self.model.spies_ids[0] not in dont_choose:
 					dont_choose.append(self.model.spies_ids[0])
-					#knows.append(agent)
-				if len(nodes2) < len(self.model.kripke_model.ks.worlds):
+				if len(nodes2) < len(self.model.kripke_model.ks.worlds) and self.model.spies_ids[1] not in dont_choose:
 					dont_choose.append(self.model.spies_ids[1])
-					#knows.append(agent)
 
 		if dont_choose == len(self.model.spies_ids):
 			mission_team.append(random.choice(dont_choose))
@@ -81,7 +67,7 @@ class Spy(AbstractAgent):
 			mission_team.append(self.model.spies_ids[self.model.spies_ids != dont_choose])
 		while len(mission_team) != self.model.team_sizes[self.model.mission_number - 1]:
 			temp = random.choice(range(1, self.model.num_agents+1))
-			if temp not in dont_choose and temp not in mission_team:
+			if temp not in self.model.spies_ids and temp not in mission_team:
 				mission_team.append(temp)
 		return mission_team
 
@@ -120,9 +106,9 @@ class Spy(AbstractAgent):
 				print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
 				print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
 			return vote
+	
 	def play_card_0th_order(self):
 		return "Fail"
-
 
 	def play_card_2nd_order(self):
 		mission_team = self.model.mission_team
