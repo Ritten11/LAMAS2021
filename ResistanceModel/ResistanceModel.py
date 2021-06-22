@@ -7,7 +7,6 @@ from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
 
-
 class ResistanceModel(Model):
     """A model with some number of agents."""
     def __init__(self, N, S, width, height, hok, ps, debugging=False):
@@ -16,12 +15,13 @@ class ResistanceModel(Model):
         self.num_agents = N
         self.num_spies = S
         self.spy_reasons = hok  # Higher Order Knowledge use of the spies
+        print(self.spy_reasons)
         self.ps = ps            # party size
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
-        #self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
-        self.spies_ids = [1,2]#[s+1 for s in self.spies_ids]
+        self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
+        self.spies_ids = [s+1 for s in self.spies_ids]
         self.true_world = ""
         if debugging:
             print(f"Spies in this model: {self.spies_ids}")
@@ -34,6 +34,7 @@ class ResistanceModel(Model):
             a.initKB()
             self.schedule.add(a)
             self.grid.place_agent(a, (i, 0))
+        print(f"true world: {self.true_world}")
         # Create Kripke model
         self.kripke_model = Resistance5Agents(N=self.num_agents)
         
@@ -67,8 +68,6 @@ class ResistanceModel(Model):
         ''' Set the mission leader for the round '''
         if self.mission_leader == None:
             self.mission_leader = random.randint(1, self.num_agents)
-            self.mission_leader = 4
-
         else: 
             self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents) else 1
 
@@ -81,7 +80,7 @@ class ResistanceModel(Model):
             self.set_mission_leader() # mission leader is set
             self.try_leader += 1
             print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
-            self.mission_team = self.schedule.agents[self.mission_leader - 1].choose_team()
+            #self.mission_team = self.schedule.agents[self.mission_leader - 1].choose_team()
             self.schedule.step()
             self.state = "vote"
 
@@ -95,9 +94,6 @@ class ResistanceModel(Model):
                     self.mission_number += 1
                     self.spy_points += 1
                     self.try_leader = 0
-                
-                if self.mission_number > 5:
-                    self.state = "Game_over"
 
         elif self.state == "go_on_mission":
             self.schedule.step()
@@ -113,10 +109,14 @@ class ResistanceModel(Model):
             self.mission_number += 1
             self.try_leader = 0
             self.state = "choose_team"
-        
+
         elif self.state == "Game_over":
             self.running = False
             print(f"Game over: spies got {self.spy_points}, resistance got {self.resisitance_points}")
+            print(self.game_end())
+        
+        if self.mission_number > len(self.team_sizes):
+                    self.state = "Game_over"
 
         print(f"state is {self.state}")
 
@@ -126,6 +126,11 @@ class ResistanceModel(Model):
             result = "Spies won"
         else:
             result = "Resistance won: " + str(self.identity_revealed)
+        # OR - depends what we want to keep 
+        if self.identity_revealed != 0: 
+            result = "Resistance won: " + str(self.identity_revealed)
+        else: 
+            result = "Spies won"
         return result
 
     def check_vote_passed(self):
@@ -134,10 +139,8 @@ class ResistanceModel(Model):
             votes.append(agent.vote)
         return True if votes.count("Yes") >= votes.count("No") else False
     
-
     def announce_mission_result(self):
         played = []
-        print(f"played: {played}")
         for agent in self.schedule.agents:
             if agent.card != None:
                 played.append(agent.card)
@@ -163,23 +166,21 @@ class ResistanceModel(Model):
                 temp = [Atom(str(a)) for a in self.mission_team]
                 self.announcement = Or(Or(And(temp[0], temp[1]), And(temp[0], temp[2])), And(temp[1], temp[2]))
             print("fail and pass")
-        # comment in if spies only play a fail card
         elif "Fail" not in played:
             self.resisitance_points += 1
-            if self.spy_reasons == False:
+            if self.spy_reasons == False: # if spies dont reason then no one in the mission is a spy
                 temp = [Not(Atom(str(a))) for a in self.mission_team]
                 self.announcement = And(temp[0], temp[1])
                 if self.team_sizes[self.mission_number - 1] == 3:
                     self.announcement = And(self.announcement, temp[2])
                 print("fail not in")
-            else: # I hate this but it should work <- is
+            else: # if spies reason then anyone can be a spy
                 temp = [Atom(str(a)) for a in range(1, self.num_agents+1)]
                 self.announcement = Or(Or(Or(Or(temp[0], temp[1]), temp[2]), temp[3]), temp[4])
                 if self.num_agents == 6:
                     self.announcement = Or(self.announcement, temp[5])
         print(f"announcement is: {self.announcement}")
 
-        
         print("before announcement:")
         print(f"worlds: {[world.name for world in self.kripke_model.ks.worlds]}")
         print(self.kripke_model.ks.relations)
