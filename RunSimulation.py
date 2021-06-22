@@ -4,6 +4,7 @@ from mesa.batchrunner import BatchRunner, BatchRunnerMP
 import argparse
 import os
 
+
 def init_argparse() -> argparse.ArgumentParser:
     """Initialise the command line argument parser.
     Returns:
@@ -22,6 +23,8 @@ def init_argparse() -> argparse.ArgumentParser:
                         help="Specify how big the mission parties should be")
     parser.add_argument('-hok', '--higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the spies should use higher order knowledge")
+    parser.add_argument('-iter', '--iterations', default=100, type=int, choices=range(1, 100),
+                        help='Specify the number of iterations for each condition')
     return parser
 
 
@@ -36,23 +39,17 @@ if options.run_mode == 'gui':
 
     server.run_server()
 elif options.run_mode == 'batch':
-    fixed_params = {"width": 24,
-                    "height": 9,
-                    "occupancy": options.occupancy}
-    variable_params = {"social_distance": [0, 1, 2],
-                       "vent": [0.7, 1.0, 1.5],
-                       "seat_mode": ['normal', 'emptyrows',
-                                     'onlywindow', 'checker'],
-                       "one_way": [True, False]}
+    fixed_params = {"N": 5}
+    variable_params = {"ps": ['2', 'default', '3'],
+                       "hok": [True, False]}
 
     batch_run = BatchRunner(ResistanceModel,
                             variable_params,
                             fixed_params,
-                            iterations=options.iter,
-                            max_steps=100000,
-                            agent_reporters={"Total_time": "total_t",
-                                             "Total_distance": "total_sd",
-                                             "Infection_prob": "inf_prob"})
+                            iterations=options.iterations,
+                            max_steps=50,
+                            model_reporters={"Rounds_won_spies": "total_t",
+                                             "Number_of_rounds": "total_sd"})
     batch_run.run_all()
     run_data = batch_run.get_agent_vars_dataframe()
     print(f"levels sd: {run_data['social_distance'].unique()}")

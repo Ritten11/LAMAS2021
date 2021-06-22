@@ -43,7 +43,7 @@ class ResistanceModel(Model):
         self.try_leader = 0
         self.mission_number = 1
         self.mission_team = []
-        self.spy_points = 0
+        self.rounds_won_spies = [0, 0, 0, 0, 0]
         self.resisitance_points = 0
         self.identity_revealed = 0
         self.state = None
@@ -122,7 +122,7 @@ class ResistanceModel(Model):
 
     def game_end(self):
         result = ""
-        if self.spy_points > self.resisitance_points:
+        if sum(self.rounds_won_spies) >= 3:
             result = "Spies won"
         else:
             result = "Resistance won: " + str(self.identity_revealed)
