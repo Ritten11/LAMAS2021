@@ -7,21 +7,21 @@ from ResistanceModel.Resistance import Resistance
 
 
 class ModelServer:
-    def __init__(self):
-        self.grid_width = 7
+    def __init__(self, N, ps, hok, S=2):
+        if N == 5:
+            self.grid_width = 7
+        elif N == 6:
+            self.grid_width = 8
+        else:
+            raise IOError("Incorrect number of agents.")
         self.grid_height = 5
         canvas_element = CanvasGrid(self.resistance_agent_portrayal, self.grid_width, self.grid_height, 500, 500)
         self.server = ModularServer(ResistanceModel,
                                     [canvas_element],
                                     "Resistance Model",
-                                    {"N": 5, "S": 2, "width": self.grid_width, "height": self.grid_height, "flag": "spies-dont-reason"})
-        # N = 5 , grid_width = 7
-        # N = 6 , grid_width = 8
-        # "basecase": spies reason, actual team sizes, 5 agents
-        # "spies-dont-reason": spies dont reason, actual team sizes, 5 agents
-        # "6players": spies reason, actual team sizes, 6 agents
-        # "teams2": spies reason, team sizes of 2, 5 agents
-        # "teams3": spies reason, team sizes of 3, 5 agents
+                                    {"N": N, "S": S, "width": self.grid_width, "height": self.grid_height,
+                                     "ps": ps, "hok": hok})
+
         self.server.port = 8521  # The default
 
     def run_server(self):

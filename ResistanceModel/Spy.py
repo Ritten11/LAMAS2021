@@ -33,7 +33,10 @@ class Spy(AbstractAgent):
 
 		if self.model.state == "play":
 			if self.unique_id in self.model.mission_team:
-				self.card = self.play_card_2nd_order()
+				if self.model.spy_reasons:
+					self.card = self.play_card_2nd_order()
+				else:
+					self.card = self.play_card_0th_order()
 				print(f"{self.card} card is played by {self.unique_id}")
 		   
 
@@ -117,6 +120,9 @@ class Spy(AbstractAgent):
 				print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
 				print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
 			return vote
+	def play_card_0th_order(self):
+		return "Fail"
+
 
 	def play_card_2nd_order(self):
 		mission_team = self.model.mission_team

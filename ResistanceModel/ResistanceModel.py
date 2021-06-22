@@ -10,12 +10,13 @@ import random
 
 class ResistanceModel(Model):
     """A model with some number of agents."""
-    def __init__(self, N, S, width, height, flag, debugging=False):
+    def __init__(self, N, S, width, height, hok, ps, debugging=False):
         random.seed(21)  # I think we want to change the seed
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S
-        self.flag = flag
+        self.spy_reasons = hok  # Higher Order Knowledge use of the spies
+        self.ps = ps            # party size
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
         # Create agents
@@ -34,9 +35,9 @@ class ResistanceModel(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i, 0))
         # Create Kripke model
-        self.kripke_model = Resistance5Agents(N = self.num_agents)
+        self.kripke_model = Resistance5Agents(N=self.num_agents)
         
-        self.initialize_flagged(self.flag)
+        self.team_sizes = self.init_team_size()
         
         self.mission_leader = None
         self.try_leader = 0
@@ -49,21 +50,18 @@ class ResistanceModel(Model):
         self.announcement = None
         self.running = True
 
-    def initialize_flagged(self, flag): # I can also include the number of agents in here if we want to include that?
+    def init_team_size(self): # I can also include the number of agents in here if we want to include that?
         # number of agents that go on each mission
-        if flag == "teams2":
-            self.team_sizes = [2] * 5
-        elif flag == "teams3":
-            self.team_sizes = [3] * 5
-        elif flag == "6players":
-            self.team_sizes = [2, 3, 4, 3, 4]
+        team_sizes = []
+        if self.ps == "2":
+            team_sizes = [2] * 5
+        elif self.ps == "3":
+            team_sizes = [3] * 5
+        elif self.num_agents == 6:
+            team_sizes = [2, 3, 4, 3, 4]
         else:
-            self.team_sizes = [2, 3, 2, 3, 3] # basecase
-        
-        if flag == "spies-dont-reason":
-            self.spy_reasons = False
-        else: 
-            self.spy_reasons = True # basecase
+            team_sizes = [2, 3, 2, 3, 3] # basecase
+        return team_sizes
 
     def set_mission_leader(self):
         ''' Set the mission leader for the round '''
@@ -163,18 +161,18 @@ class ResistanceModel(Model):
                     self.announcement = Or(self.announcement, temp[2])
             else: # case "fail", "fail", "pass"
                 temp = [Atom(str(a)) for a in self.mission_team]
-                self.announcement = Or(Or(And(temp[0], temp[1]), And(temp[0], temp[2])),And(temp[1], temp[2]))
+                self.announcement = Or(Or(And(temp[0], temp[1]), And(temp[0], temp[2])), And(temp[1], temp[2]))
             print("fail and pass")
         # comment in if spies only play a fail card
         elif "Fail" not in played:
             self.resisitance_points += 1
-            if self.flag == "spies-dont-reason":
+            if self.spy_reasons == False:
                 temp = [Not(Atom(str(a))) for a in self.mission_team]
                 self.announcement = And(temp[0], temp[1])
                 if self.team_sizes[self.mission_number - 1] == 3:
                     self.announcement = And(self.announcement, temp[2])
                 print("fail not in")
-            else: # I hate this but it should work 
+            else: # I hate this but it should work <- is
                 temp = [Atom(str(a)) for a in range(1, self.num_agents+1)]
                 self.announcement = Or(Or(Or(Or(temp[0], temp[1]), temp[2]), temp[3]), temp[4])
                 if self.num_agents == 6:
