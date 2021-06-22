@@ -1,4 +1,5 @@
 from mesa import Model
+from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
@@ -7,10 +8,15 @@ from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
 
+
+def get_identity_revealed(model):
+    return model.identity_revealed
+
+
 class ResistanceModel(Model):
     """A model with some number of agents."""
     def __init__(self, N, S, width, height, hok, ps, debugging=False):
-        random.seed(21)  # I think we want to change the seed
+        random.seed(42)  # I think we want to change the seed
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S
@@ -50,6 +56,9 @@ class ResistanceModel(Model):
         self.state = None
         self.announcement = None
         self.running = True
+
+        self.dataCollector = DataCollector(
+            model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
 
     def init_team_size(self): # I can also include the number of agents in here if we want to include that?
         # number of agents that go on each mission
@@ -91,8 +100,9 @@ class ResistanceModel(Model):
             else:
                 self.state = "choose_team"
                 if self.try_leader == 5:
+                    self.rounds_won_spies[self.mission_number - 1] = 1
                     self.mission_number += 1
-                    self.spy_points += 1
+                    #self.spy_points += 1
                     self.try_leader = 0
 
         elif self.state == "go_on_mission":
@@ -112,11 +122,12 @@ class ResistanceModel(Model):
 
         elif self.state == "Game_over":
             self.running = False
-            print(f"Game over: spies got {self.spy_points}, resistance got {self.resisitance_points}")
+            print(f"Game over: spies got {sum(self.rounds_won_spies)}, resistance got {(self.mission_number-1)-sum(self.rounds_won_spies)}")
             print(self.game_end())
         
         if self.mission_number > len(self.team_sizes):
-                    self.state = "Game_over"
+            self.state = "Game_over"
+            self.dataCollector.collect(self)
 
         print(f"state is {self.state}")
 
@@ -148,7 +159,7 @@ class ResistanceModel(Model):
         print(f"played: {played}")
 
         if "Pass" not in played: # there are only "fail" cards played
-            self.spy_points += 1
+            self.rounds_won_spies[self.mission_number-1] = 1
             temp = [Atom(str(a)) for a in self.mission_team]
             self.announcement = And(temp[0], temp[1])
             if self.team_sizes[self.mission_number - 1] == 3:
@@ -156,7 +167,7 @@ class ResistanceModel(Model):
             print("pass not in")
 
         elif "Fail" in played and "Pass" in played: # both "pass" and "fail" cards were played
-            self.spy_points += 1
+            self.rounds_won_spies[self.mission_number-1] = 1
             if played.count("Fail") == 1:
                 temp = [Atom(str(a)) for a in self.mission_team]
                 self.announcement = Or(temp[0], temp[1])
@@ -167,7 +178,7 @@ class ResistanceModel(Model):
                 self.announcement = Or(Or(And(temp[0], temp[1]), And(temp[0], temp[2])), And(temp[1], temp[2]))
             print("fail and pass")
         elif "Fail" not in played:
-            self.resisitance_points += 1
+            self.rounds_won_spies[self.mission_number-1] = 0
             if self.spy_reasons == False: # if spies dont reason then no one in the mission is a spy
                 temp = [Not(Atom(str(a))) for a in self.mission_team]
                 self.announcement = And(temp[0], temp[1])
@@ -194,4 +205,10 @@ class ResistanceModel(Model):
             self.identity_revealed = self.mission_number
             print(f"reavealed at {self.identity_revealed}")
 
+    def get_mission_results(self):  # transform the bit-array into the corresponding integer.
+        return 16*self.rounds_won_spies[0] + \
+               8*self.rounds_won_spies[1] + \
+               4*self.rounds_won_spies[2] + \
+               2*self.rounds_won_spies[3] + \
+               self.rounds_won_spies[4]
 

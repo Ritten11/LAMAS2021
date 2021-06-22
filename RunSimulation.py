@@ -3,6 +3,7 @@ from ResistanceModel.ResistanceModel import ResistanceModel
 from mesa.batchrunner import BatchRunner, BatchRunnerMP
 import argparse
 import os
+import errno
 
 
 def init_argparse() -> argparse.ArgumentParser:
@@ -23,7 +24,7 @@ def init_argparse() -> argparse.ArgumentParser:
                         help="Specify how big the mission parties should be")
     parser.add_argument('-hok', '--higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the spies should use higher order knowledge")
-    parser.add_argument('-iter', '--iterations', default=100, type=int, choices=range(1, 100),
+    parser.add_argument('-iter', '--iterations', default=10, type=int, choices=range(1, 200),
                         help='Specify the number of iterations for each condition')
     return parser
 
@@ -39,7 +40,10 @@ if options.run_mode == 'gui':
 
     server.run_server()
 elif options.run_mode == 'batch':
-    fixed_params = {"N": 5}
+    fixed_params = {"N": 5,
+                    "S": 2,
+                    "height": 5,
+                    "width": 7}
     variable_params = {"ps": ['2', 'default', '3'],
                        "hok": [True, False]}
 
@@ -48,20 +52,20 @@ elif options.run_mode == 'batch':
                             fixed_params,
                             iterations=options.iterations,
                             max_steps=50,
-                            model_reporters={"Rounds_won_spies": "total_t",
-                                             "Number_of_rounds": "total_sd"})
+                            model_reporters={"identity_revealed": "get_identity_revealed"})  # "rounds_won_spies": "get_mission_results",
     batch_run.run_all()
-    run_data = batch_run.get_agent_vars_dataframe()
-    print(f"levels sd: {run_data['social_distance'].unique()}")
-    print(f"levels sm: {run_data['seat_mode'].unique()}")
-    print(f"levels vent: {run_data['vent'].unique()}")
-    print(f"levels one_way: {run_data['one_way'].unique()}")
+    run_data = batch_run.get_model_vars_dataframe()
+    print(f"levels rounds_won: {run_data['rounds_won_spies'].unique()}")
+    print(f"levels identity_revealed: {run_data['identity_revealed'].unique()}")
+    print(f"levels higher order knowledge: {run_data['hok'].unique()}")
+    print(f"levels ps: {run_data['ps'].unique()}")
+    print(f"levels N: {run_data['N'].unique()}")
     try:
         os.mkdir("results")
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    with open('results' + os.path.sep + 'output_' + options.occupancy + '.json', 'w') as outfile:
+    with open('results' + os.path.sep + 'output_' + options.number_of_agents + '.json', 'w') as outfile:
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
