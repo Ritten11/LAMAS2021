@@ -15,12 +15,13 @@ def get_identity_revealed(model):
 
 class ResistanceModel(Model):
     """A model with some number of agents."""
-    def __init__(self, N, S, width, height, hok, ps, debugging=False):
+    def __init__(self, N, S, width, height, sphok, rhok, ps, debugging=False):
         random.seed(21)  # I think we want to change the seed
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S
-        self.spy_reasons = hok  # Higher Order Knowledge use of the spies
+        self.spy_reasons = sphok  # Higher Order Knowledge use of the Spies
+        self.resistance_reasons = rhok  # Higher Order Knowledge use of the Resistance
         print(self.spy_reasons)
         self.ps = ps            # party size
         self.grid = MultiGrid(width, height, True)
@@ -86,7 +87,7 @@ class ResistanceModel(Model):
             self.state = "choose_team"
         
         if self.state == "choose_team":    
-            self.set_mission_leader() # mission leader is set
+            self.set_mission_leader()  # mission leader is set
             self.try_leader += 1
             print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             #self.mission_team = self.schedule.agents[self.mission_leader - 1].choose_team()

@@ -22,8 +22,10 @@ def init_argparse() -> argparse.ArgumentParser:
     parser.add_argument('-ps', '--party_size', default='default', type=str,
                         choices=['2', 'default', '3'],
                         help="Specify how big the mission parties should be")
-    parser.add_argument('-hok', '--higher_order_knowledge', default=False, type=bool,
+    parser.add_argument('-sphok', '--spies_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the spies should use higher order knowledge")
+    parser.add_argument('-rhok', '--resistance_higher_order_knowledge', default=False, type=bool,
+                        help="Specify whether the resistance should use higher order knowledge")
     parser.add_argument('-iter', '--iterations', default=10, type=int, choices=range(1, 200),
                         help='Specify the number of iterations for each condition')
     return parser
@@ -48,7 +50,8 @@ def get_mission_results(model):  # transform the bit-array into the correspondin
            model.rounds_won_spies[4]
 
 if options.run_mode == 'gui':
-    server = ModelServer(N=options.number_of_agents, ps=options.party_size, hok=options.higher_order_knowledge)
+    server = ModelServer(N=options.number_of_agents, ps=options.party_size,
+                         sphok=options.spies_higher_order_knowledge, rhok=options.resistance_higher_order_knowledge)
 
     server.run_server()
 elif options.run_mode == 'batch':
@@ -57,7 +60,8 @@ elif options.run_mode == 'batch':
                     "width": 7}
     variable_params = {"N": [5, 6],
                        "ps": ['2', 'default', '3'],
-                       "hok": [True, False]}
+                       "sphok": [True, False],
+                       "rhok": [True, False]}
 
     batch_run = BatchRunner(ResistanceModel,
                             variable_params,

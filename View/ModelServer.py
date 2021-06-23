@@ -7,7 +7,7 @@ from ResistanceModel.Resistance import Resistance
 
 
 class ModelServer:
-    def __init__(self, N, ps, hok, S=2):
+    def __init__(self, N, ps, sphok, rhok, S=2):
         if N == 5:
             self.grid_width = 7
         elif N == 6:
@@ -20,7 +20,7 @@ class ModelServer:
                                     [canvas_element],
                                     "Resistance Model",
                                     {"N": N, "S": S, "width": self.grid_width, "height": self.grid_height,
-                                     "ps": ps, "hok": hok})
+                                     "ps": ps, "sphok": sphok, "rhok": rhok})
 
         self.server.port = 8521  # The default
 
