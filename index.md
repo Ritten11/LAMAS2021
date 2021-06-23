@@ -47,10 +47,10 @@ The next mission leader is chosen as the next player: agent 5. Mission 2 require
 Since agents 1 and 2 know that agents 3, 4 and 5 are all part of the Resistance, they will both vote against this mission team (as the Resistance will figure out who the spies are, as only pass-cards will be played).
 However, agents 3, 4, and 5 will vote for this mission as they do not know that any of the other agents in the team are spies. This leads to a majority for the mission team, so the mission goes ahead.
 
-On mission 2, agents 3, 4, and 5 all play a pass card as they are all part of the Resistance. This means that the mission passes and the Resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public annoucement made is 
+On mission 2, agents 3, 4, and 5 all play a pass card as they are all part of the Resistance. This means that the mission passes and the Resistance receives one point. This leads to the conclusion that agent 3, agent 4 and agent 5 are not spies. Therefore, the public announcement made is 
 <img src="https://render.githubusercontent.com/render/math?math=[\neg s_3 \wedge \neg s_4 \wedge \neg s_5]">
 
-This public annoucement drastically reduces the model. The worlds with _s<sub>3</sub>_, _s<sub>4</sub>_ or _s<sub>5</sub>_ are removed. This model is illustrated below. 
+This public announcement drastically reduces the model. The worlds with _s<sub>3</sub>_, _s<sub>4</sub>_ or _s<sub>5</sub>_ are removed. This model is illustrated below. 
 
 ![Image](/images/5reduction.png)
 
@@ -63,10 +63,18 @@ As can be seen, the only world that is left is the real state of the model, _s<s
   There are two different types of agent in this game; Resistance members and spies. The epistemic logic is different for both of these. We have given some introduction into the epistemic logic in the example run-through of the game; we will elaborate more here.
   
   At the beginning of the game, it is basically "no one knows anything". Once the spies know who the spies are, this knowledge updates, such that it becomes common knowledge that the spies know who the spies are. It is, however, impossible to deduce who the spies are at this moment. We will look at the different rounds of the game (as described in the Introduction), and see how epistemic logic can be used.
+  
   1. **Choosing the Mission Leader**: No epistemic logic is used in this case. The first Mission Leader is chosen at random, and after that, the Mission Leader is rotated.
-  2. **Team selection**: In the selection of the teams, it matters whether the Mission Leader is a Resistance member or a spy. In the case of a Resistance agent, you do not want to send a spy on a mission, as this will likely cause your mission to fail (depending on whether or not the spy plays a fail-card). The Resistance agent will thus put together a team in which no spies are present.
-  3. **Vote on the team make-up**: Each agent casts a vote. Again, it is important whether an agent is a Resistance member or a spy. 
+  2. **Team selection**: In the selection of the teams, it matters whether the Mission Leader is a Resistance member or a spy.
+    - **Resistance**: a resistance agent does not want to send a spy on a mission, as this can cause the mission to fail. Using the Kripke model, we determine whether the agent knows the identity of one or both of the spies. If they do know a spy's identity, the agent will avoid choosing this agent for the team. To form the team, the agent will choose themselves, as they know their own identity, and any agent they are not certain is a spy.
+    - **Spy**: a spy aims to sabotage the mission. This means a spy wants to choose a mission team that will not be voted down by the rest of the agents. Therefore, the spy must determine whether the identity of a spy has been revealed to any of the agents. This is done using the Kripke model. If one spy's identity is known by an agent, the team leader chooses the other spy for the mission and randomly fills the rest of the mission with resistance agents. If both identities are known, the team leader randomly chooses a spy for the mission, as they do not want to end up with a mission consisting of only resistance agents.
+  3. **Vote on the team make-up**: Each agent casts a vote. Again, it is important whether an agent is a Resistance member or a spy.
+    - **Resistance**: 
+    - **Spy**: 
   4. **Playing the cards**: Of course, a Resistance agent will always play a pass-card.
+  5. **Reasoning based on the outcome**: Firstly, a public announcement is made to all the agents about the result of the mission. This is used to update the Kripke model to reflect the knowledge gained from the announcement. Secondly, the resistance agents can use the result of the mission and the voting round to reason on the potential identity of the spies. 
+    - **Public announcement**: The public announcement removes worlds that are no longer possible given the results of the mission. The public announcement made depends on the cards played by the agents on the mission. If only fail cards were played, then the announcement would be that the agents on the mission are spies. If both a fail card and pass cards are played, then the announcement would be that one of the agents on the mission is a spy. If there are two fail cards and one or more pass cards, then the announcement would be that two of the agents on the mission are spies. Finally, if only pass cards are played, the announcement depends on whether the spies can reason. With reasoning spies, nothing can be determined on a passed mission as the spies can also play pass cards, whereas, with non-reasoning spies, the announcement would be that all agents on the mission are not spies.
+    - **Resistance reasoning**: The resistance agents can reflect on who voted for a mission that failed. For a mission to be sabotaged, a spy must be on the mission. This means that the spies would be in favour of that mission team and would have voted for it. Therefore, a resistance agent can use that information to weed out the identity of the spies. This involves updating the Kripke model with an announcement based on the knowledge of the agent.
 
 ## Experiments
   We run several experiments, where we vary different settings. The first setting is one that is varied for both of the other two experiments, meaning we have 10 experiments in total: (3 + 2) * 2. As the quantifiable evaluation metric, we use the percentage of games that are won by the Resistance. The settings we vary are the following: 
@@ -82,6 +90,7 @@ As can be seen, the only world that is left is the real state of the model, _s<s
 
 
 <!--- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+In the case of a Resistance agent, you do not want to send a spy on a mission, as this will likely cause your mission to fail (depending on whether or not the spy plays a fail-card). The Resistance agent will thus put together a team in which no spies are present.
 
 ```markdown
 Syntax highlighted code block
