@@ -15,9 +15,10 @@ def get_identity_revealed(model):
 
 class ResistanceModel(Model):
     """A model with some number of agents."""
-    def __init__(self, N, S, width, height, sphok, rhok, ps, debugging=False):
-        random.seed(21)  # I think we want to change the seed
-        self.debugging = debugging
+    def __init__(self, N, S, width, height, sphok, rhok, ps, debug):
+        self.debugging = debug
+        if debug:
+            random.seed(21)  # I think we want to change the seed
         self.num_agents = N
         self.num_spies = S
         self.spy_reasons = sphok  # Higher Order Knowledge use of the Spies
@@ -30,7 +31,8 @@ class ResistanceModel(Model):
         self.spies_ids = random.sample(range(self.num_agents), self.num_spies)
         self.spies_ids = [s+1 for s in self.spies_ids]
         self.true_world = ""
-        if debugging:
+        if debug:
+
             print(f"Spies in this model: {self.spies_ids}")
         for i in range(1,self.num_agents+1):
             if i in self.spies_ids:
@@ -52,14 +54,13 @@ class ResistanceModel(Model):
         self.mission_number = 1
         self.mission_team = []
         self.rounds_won_spies = [0, 0, 0, 0, 0]
-        #self.resisitance_points = 0
         self.identity_revealed = 0
         self.state = None
         self.announcement = None
         self.running = True
 
-        self.dataCollector = DataCollector(
-            model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
+        # self.dataCollector = DataCollector(
+        #     model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
 
     def init_team_size(self):
         ''' 
@@ -129,7 +130,7 @@ class ResistanceModel(Model):
         
         if self.mission_number > len(self.team_sizes):
             self.state = "Game_over"
-            self.dataCollector.collect(self)
+            # self.dataCollector.collect(self)
 
         print(f"state is {self.state}")
 
