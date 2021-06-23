@@ -82,6 +82,7 @@ class Resistance(AbstractAgent):
 		return True
 
 	def updateKB(self):
+		print("The resistance is now using higher order knowledge")
 		print(f"failed {self.model.failed}")
 		if self.model.failed: 
 			yes_votes = []

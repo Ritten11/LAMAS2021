@@ -36,8 +36,7 @@ def init_argparse() -> argparse.ArgumentParser:
 parser = init_argparse()
 options = parser.parse_args()
 args = vars(options)
-# grid = CanvasGrid(agent_portrayal, 24, 9, 1000, 500)
-#
+
 
 
 def get_identity_revealed(model):
