@@ -16,7 +16,7 @@ def get_identity_revealed(model):
 class ResistanceModel(Model):
     """A model with some number of agents."""
     def __init__(self, N, S, width, height, hok, ps, debugging=False):
-        random.seed(42)  # I think we want to change the seed
+        random.seed(21)  # I think we want to change the seed
         self.debugging = debugging
         self.num_agents = N
         self.num_spies = S

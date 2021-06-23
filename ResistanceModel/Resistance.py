@@ -87,12 +87,14 @@ class Resistance(AbstractAgent):
 			yes_votes = []
 			for agent in self.model.schedule.agents:
 				if agent.vote == "Yes":
-					yes_votes.append(agent)
+					yes_votes.append(agent.unique_id)
 			print(yes_votes)
 			temp = [Atom(str(a)) for a in yes_votes]
 			formula = Or(Or(temp[0], temp[1]), temp[2])
-			formula = Or(Or(Or(temp[0], temp[1]), temp[2]), temp[3]) if len(yes_votes) == 4
-			formula = Or(Or(Or(Or(temp[0], temp[1]), temp[2]), temp[3]), temp[4]) if len(yes_votes) == 5
+			if len(yes_votes) == 4: 
+				formula = Or(formula, temp[3])
+			if len(yes_votes) == 5:
+				formula = Or(Or(formula, temp[3]), temp[4])
 			print(formula)
 			self.model.kripke_model.ks = self.model.kripke_model.ks.solve(formula)
 			#self.kripke_model.ks = self.kripke_model.ks.solve(self.announcement)
