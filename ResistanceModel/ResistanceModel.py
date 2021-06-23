@@ -151,6 +151,7 @@ class ResistanceModel(Model):
         return True if votes.count("Yes") >= votes.count("No") else False
     
     def announce_mission_result(self):
+        self.failed = True
         played = []
         for agent in self.schedule.agents:
             if agent.card != None:
@@ -178,6 +179,7 @@ class ResistanceModel(Model):
                 self.announcement = Or(Or(And(temp[0], temp[1]), And(temp[0], temp[2])), And(temp[1], temp[2]))
             print("fail and pass")
         elif "Fail" not in played:
+            self.failed = False
             self.rounds_won_spies[self.mission_number-1] = 0
             if self.spy_reasons == False: # if spies dont reason then no one in the mission is a spy
                 temp = [Not(Atom(str(a))) for a in self.mission_team]
