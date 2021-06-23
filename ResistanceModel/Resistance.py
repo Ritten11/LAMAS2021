@@ -23,7 +23,8 @@ class Resistance(AbstractAgent):
 			if self.model.mission_leader == self.unique_id:
 				self.model.grid.move_agent(self, (self.unique_id, 2))
 				self.model.mission_team = self.choose_team()
-				print(f"team is {self.model.mission_team}")
+				if self.model.debugging:
+					print(f"team is {self.model.mission_team}")
 			else:
 				self.model.grid.move_agent(self, (self.unique_id, 0))
 
@@ -32,7 +33,8 @@ class Resistance(AbstractAgent):
 				self.vote = "Yes"
 			else:
 				self.vote = "No"
-			print(f"Agent {self.unique_id} voted {self.vote}")
+			if self.model.debugging:
+				print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
 			if self.unique_id in self.model.mission_team:
@@ -41,7 +43,8 @@ class Resistance(AbstractAgent):
 		if self.model.state == "play":
 			if self.unique_id in self.model.mission_team:
 				self.card = "Pass" # resistance agents always play a "pass" card
-				print(f"{self.card} card is played by {self.unique_id}")
+				if self.model.debugging:
+					print(f"{self.card} card is played by {self.unique_id}")
 		   
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
@@ -100,7 +103,6 @@ class Resistance(AbstractAgent):
 		If an agent voted for a mission that failed, then that agent may be a spy.
 		'''
 		print("The resistance is now using higher order knowledge")
-		print(f"failed {self.model.failed}")
 		if self.model.failed: 
 			yes_votes = []
 			for agent in self.model.schedule.agents:
