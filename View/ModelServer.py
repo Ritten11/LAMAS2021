@@ -4,6 +4,7 @@ from mesa.visualization.ModularVisualization import ModularServer
 from ResistanceModel.ResistanceModel import ResistanceModel
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
+from View.LegendElement import LegendElement
 
 
 class ModelServer:
@@ -17,7 +18,7 @@ class ModelServer:
         self.grid_height = 5
         canvas_element = CanvasGrid(self.resistance_agent_portrayal, self.grid_width, self.grid_height, 500, 500)
         self.server = ModularServer(ResistanceModel,
-                                    [canvas_element],
+                                    [canvas_element, LegendElement()],
                                     "Resistance Model",
                                     {"N": N, "S": S, "width": self.grid_width, "height": self.grid_height,
                                      "ps": ps, "sphok": sphok, "rhok": rhok, "debug": debug})

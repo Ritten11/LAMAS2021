@@ -21,13 +21,13 @@ def init_argparse() -> argparse.ArgumentParser:
                         help="Specify what mode you want to run the simulation in")
     parser.add_argument('-ps', '--party_size', default='default', type=str,
                         choices=['2', 'default', '3'],
-                        help="Specify how big the mission parties should be")
+                        help="Specify how big the mission parties should be. Use the default for the original game settings")
     parser.add_argument('-sphok', '--spies_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the spies should use higher order knowledge")
     parser.add_argument('-rhok', '--resistance_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the resistance should use higher order knowledge")
-    parser.add_argument('-iter', '--iterations', default=10, type=int, choices=range(1, 200),
-                        help='Specify the number of iterations for each condition')
+    parser.add_argument('-iter', '--iterations', default=10, type=int, choices=[1, 2, 5, 10, 15, 20],
+                        help='Specify the number of iterations for each condition when running the simulation in batch mode')
     parser.add_argument('-debug', default=False, type=bool,
                         help="Set to true when debugging")
     return parser

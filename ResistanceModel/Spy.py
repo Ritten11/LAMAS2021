@@ -37,7 +37,7 @@ class Spy(AbstractAgent):
 
 		if self.model.state == "play":
 			if self.unique_id in self.model.mission_team:
-				if self.model.spy_reasons:
+				if self.model.spy_reasons and self.model.mission_number <= 4:
 					self.card = self.play_card_2nd_order()
 				else:
 					self.card = self.play_card_0th_order()
