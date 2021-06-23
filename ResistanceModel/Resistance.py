@@ -23,7 +23,10 @@ class Resistance(AbstractAgent):
 				self.model.grid.move_agent(self, (self.unique_id, 0))
 
 		if self.model.state == "vote":
-			self.decide_on_vote()
+			if self.decide_on_vote():
+				self.vote = "Yes"
+			else:
+				self.vote = "No"
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
@@ -58,24 +61,23 @@ class Resistance(AbstractAgent):
 
 	def decide_on_vote(self):
 		# Checks whether the agent accepts the mission team or not
-		relations = self.model.kripke_model.relations[str(self.unique_id)]
+		relations = self.model.kripke_model.ks.relations[str(self.unique_id)]
 		worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]
-		s = 0
+		suspicions = [0] * self.model.num_agents
 		for agent in self.model.schedule.agents:
 			ids = str(agent.unique_id)
+			idx = agent.unique_id-1
 			if agent.unique_id == self.unique_id:
 				continue
 			else:
-				c = 0
 				for world in worlds:
 					if ids in world:
-						c += 1
-				if c == len(worlds):
-					s += 1
-		if s > 0:
-			self.vote = "No"
-		else:
-			self.vote = "Yes"
+						suspicions[idx] += 1
+		for s in suspicions:
+			if s == len(worlds):
+				return False
+
+		return True
 
 	def updateKB(self):
 		print(f"Still needs to be implemented")
