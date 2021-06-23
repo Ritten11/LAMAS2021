@@ -60,6 +60,10 @@ class Resistance(AbstractAgent):
 		return mission_team
 
 	def decide_on_vote(self):
+		'''
+		
+		:return: 
+		'''
 		# Checks whether the agent accepts the mission team or not
 		relations = self.model.kripke_model.ks.relations[str(self.unique_id)]
 		worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]

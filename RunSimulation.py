@@ -52,11 +52,11 @@ if options.run_mode == 'gui':
 
     server.run_server()
 elif options.run_mode == 'batch':
-    fixed_params = {"N": 5,
-                    "S": 2,
+    fixed_params = {"S": 2,
                     "height": 5,
                     "width": 7}
-    variable_params = {"ps": ['2', 'default', '3'],
+    variable_params = {"N": [5, 6],
+                       "ps": ['2', 'default', '3'],
                        "hok": [True, False]}
 
     batch_run = BatchRunner(ResistanceModel,
@@ -78,7 +78,7 @@ elif options.run_mode == 'batch':
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    with open('results' + os.path.sep + 'output_' + str(options.number_of_agents) + '.json', 'w') as outfile:
+    with open('results' + os.path.sep + 'output.json', 'w') as outfile:
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
