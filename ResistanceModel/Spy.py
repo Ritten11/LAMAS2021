@@ -7,14 +7,18 @@ class Spy(AbstractAgent):
 	def __init__(self, unique_id, model):
 		super().__init__(unique_id, model)
 
-	def initKB(self):
-		formula = str(self.unique_id)
-		print(formula)
-		self.KB.add(formula)
+	def initKB(self): # I dont think we need this right? we can just initialize this in __int__?
 		self.card = None
 		self.vote = None
 
 	def step(self):
+		''' 
+		Advances the model by one step using flags.
+		choose_team: if the agent is the mission leader they get to choose the team
+		vote: the agent gets to vote on the chosen team
+		go_on_mission: if the agent is on the mission they choose a card to play
+		update_knowledge: spies do not need to update their knowledge
+		'''
 		if self.model.state == "choose_team":
 			if self.model.mission_leader == self.unique_id:
 				self.model.grid.move_agent(self, (self.unique_id, 2))
@@ -41,10 +45,18 @@ class Spy(AbstractAgent):
 		   
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
-			self.updateKB()
+			#self.updateKB()
 
 
 	def choose_team(self):
+		'''
+		This function is the spy agent's reasoning for choosing a team.
+		We first go through the agents to see whether any of them know the identity of a spy.
+		If a spy has been identified, they will not choose that spy for the mission. If both
+		spies have been identified they will randomly choose one spy for the mission. The rest
+		of the team is filled of resistance agents randomly.
+		:return: the chosen mission team
+		'''
 		mission_team = []
 		dont_choose = []
 		for agent in range(1, self.model.num_agents+1):
@@ -69,6 +81,10 @@ class Spy(AbstractAgent):
 		return mission_team
 
 	def decide_on_vote_0th_order(self):
+		'''
+		This function makes the agent deicde
+		:return:
+		'''
 		# 0th order knowledge behavior:
 		#	Vote "Yes" for all missions with at least one spy
 
@@ -142,7 +158,3 @@ class Spy(AbstractAgent):
 			if agent.unique_id not in self.model.spies_ids:
 				non_spies.append(agent)
 		return non_spies
-
-
-	def updateKB(self):
-		print(f"Still needs to be implemented")

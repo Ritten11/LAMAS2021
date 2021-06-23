@@ -6,14 +6,19 @@ class Resistance(AbstractAgent):
 	def __init__(self,unique_id, model):
 		super().__init__(unique_id, model)
 
-	def initKB(self):
-		formula = str(self.unique_id)
-		print(formula)
-		self.KB.add("p")
+	def initKB(self): # I dont think we need this right? we can just initialize this in __int__?
 		self.card = None
 		self.vote = None
 
 	def step(self):
+		''' 
+		Advances the model by one step using flags.
+		choose_team: if the agent is the mission leader they get to choose the team
+		vote: the agent gets to vote on the chosen team
+		go_on_mission: if the agent is on the mission they choose a card to play
+		update_knowledge: the agent deliberates on the voting results of the mission 
+			based on the result of the mission
+		'''
 		if self.model.state == "choose_team":
 			if self.model.mission_leader == self.unique_id:
 				self.model.grid.move_agent(self, (self.unique_id, 2))
@@ -40,9 +45,17 @@ class Resistance(AbstractAgent):
 		   
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
-			self.updateKB()
+			if self.model.resistance_reasons:
+				self.updateKB()
 
 	def choose_team(self):
+		'''
+		This function is the resistance agent's reasoning for choosing a team.
+		We first go through the agents to see whether the agent knows the spies. If the agent
+		knows the identity of a spy, they will decide not to choose them for the mission. The 
+		agent will always trust themselves and will fill the rest of the mission team randomly.
+		:return: the chosen mission team
+		'''
 		mission_team = []
 		dont_choose = []
 
@@ -82,6 +95,10 @@ class Resistance(AbstractAgent):
 		return True
 
 	def updateKB(self):
+		'''
+		This function helps the agent learn from the votes of agents for the mission. 
+		If an agent voted for a mission that failed, then that agent may be a spy.
+		'''
 		print(f"failed {self.model.failed}")
 		if self.model.failed: 
 			yes_votes = []
@@ -97,4 +114,3 @@ class Resistance(AbstractAgent):
 				formula = Or(Or(formula, temp[3]), temp[4])
 			print(formula)
 			self.model.kripke_model.ks = self.model.kripke_model.ks.solve(formula)
-			#self.kripke_model.ks = self.kripke_model.ks.solve(self.announcement)
