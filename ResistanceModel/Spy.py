@@ -24,10 +24,7 @@ class Spy(AbstractAgent):
 				self.model.grid.move_agent(self, (self.unique_id, 0))
 
 		if self.model.state == "vote":
-			if self.model.spy_reasons == True:
-				self.vote = self.decide_on_vote_2nd_order()
-			else: # spies dont reason
-				self.vote = self.decide_on_vote_0th_order()
+			self.vote = self.decide_on_vote_0th_order()
 			print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
@@ -80,32 +77,32 @@ class Spy(AbstractAgent):
 		else:
 			return "No"
 
-	def decide_on_vote_2nd_order(self):
-		# 1st order knowledge behaviour:
-		#	Vote "No" if there are no spies on the team
-		# 	Vote "No" if this team will result in a resistance member knowing both Spies.
-
-		if self.number_of_spies_on_team() == 0:
-			return "No"
-		else:
-			formula = Or(Atom(str(self.model.mission_team[0])), Atom(str(self.model.mission_team[1])))
-			kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
-			vote = "Yes"
-			for agent in self.get_non_spies():
-				hypothetical_model = kripke_model_copy.solve(formula)
-				new_formula = Box_a(str(self.unique_id),
-									And(
-										Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[0]))),
-										Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[1])))))
-				excluded_nodes = hypothetical_model.nodes_not_follow_formula(new_formula)
-
-				if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members knows both spies
-					vote = "no"
-				print(f"Results for agent {agent.unique_id} and spy {self.model.spies_ids[1]}:")
-				print(f"Original							: {self.model.kripke_model.ks.get_power_set_of_worlds()}")
-				print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
-				print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
-			return vote
+	# def decide_on_vote_2nd_order(self):
+	# 	# 1st order knowledge behaviour:
+	# 	#	Vote "No" if there are no spies on the team
+	# 	# 	Vote "No" if this team will result in a resistance member knowing both Spies.
+	#
+	# 	if self.number_of_spies_on_team() == 0:
+	# 		return "No"
+	# 	else:
+	# 		formula = Or(Atom(str(self.model.mission_team[0])), Atom(str(self.model.mission_team[1])))
+	# 		kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
+	# 		vote = "Yes"
+	# 		for agent in self.get_non_spies():
+	# 			hypothetical_model = kripke_model_copy.solve(formula)
+	# 			new_formula = Box_a(str(self.unique_id),
+	# 								And(
+	# 									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[0]))),
+	# 									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[1])))))
+	# 			excluded_nodes = hypothetical_model.nodes_not_follow_formula(new_formula)
+	#
+	# 			if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members knows both spies
+	# 				vote = "no"
+	# 			print(f"Results for agent {agent.unique_id} and spy {self.model.spies_ids[1]}:")
+	# 			print(f"Original							: {self.model.kripke_model.ks.get_power_set_of_worlds()}")
+	# 			print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
+	# 			print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
+	# 		return vote
 	
 	def play_card_0th_order(self):
 		return "Fail"
