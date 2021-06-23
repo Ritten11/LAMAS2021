@@ -128,8 +128,12 @@ class Spy(AbstractAgent):
 		mission_team = self.model.mission_team
 		if len(mission_team) == 2:
 			formula = Or(Atom(str(mission_team[0])), Atom(str(mission_team[1])))
-		else:
+		elif len(mission_team) == 3:
 			formula = Or(Or(Atom(str(mission_team[0])), Atom(str(mission_team[1]))), Atom(str(mission_team[2])))
+		elif len(mission_team) == 4:
+			formula = Or(Or(Or(Atom(str(mission_team[0])), Atom(str(mission_team[1]))), Atom(str(mission_team[2]))), Atom(str(mission_team[3])))
+		else:
+			raise IOError("Amount of team members selected for mission not within range [2,4]")
 		kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
 		card = "Fail"
 		for agent in self.get_non_spies():
