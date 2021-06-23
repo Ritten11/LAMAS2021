@@ -63,16 +63,14 @@ class Resistance(AbstractAgent):
 		# Checks whether the agent accepts the mission team or not
 		relations = self.model.kripke_model.ks.relations[str(self.unique_id)]
 		worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]
-		suspicions = [0] * self.model.num_agents
-		for agent in self.model.schedule.agents:
-			ids = str(agent.unique_id)
-			idx = agent.unique_id-1
-			if agent.unique_id == self.unique_id:
+		suspicions = [0] * len(self.model.mission_team)
+		for i, agent in enumerate(self.model.mission_team):
+			if agent == self.unique_id:
 				continue
 			else:
 				for world in worlds:
-					if ids in world:
-						suspicions[idx] += 1
+					if str(agent) in world:
+						suspicions[i] += 1
 		for s in suspicions:
 			if s == len(worlds):
 				return False
