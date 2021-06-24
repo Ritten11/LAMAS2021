@@ -86,8 +86,8 @@ class Spy(AbstractAgent):
 
     def decide_on_vote_0th_order(self):
         '''
-        This function makes the agent deicde
-        :return:
+        Function defining the decision of the agent on the voting on the team composition
+        :return: The actual decision
         '''
         # 0th order knowledge behavior:
         # Vote "Yes" for all missions with at least one spy
@@ -97,37 +97,20 @@ class Spy(AbstractAgent):
         else:
             return "No"
 
-    # def decide_on_vote_2nd_order(self):
-    # 	# 1st order knowledge behaviour:
-    # 	#	Vote "No" if there are no spies on the team
-    # 	# 	Vote "No" if this team will result in a resistance member knowing both Spies.
-    #
-    # 	if self.number_of_spies_on_team() == 0:
-    # 		return "No"
-    # 	else:
-    # 		formula = Or(Atom(str(self.model.mission_team[0])), Atom(str(self.model.mission_team[1])))
-    # 		kripke_model_copy = copy.deepcopy(self.model.kripke_model.ks)
-    # 		vote = "Yes"
-    # 		for agent in self.get_non_spies():
-    # 			hypothetical_model = kripke_model_copy.solve(formula)
-    # 			new_formula = Box_a(str(self.unique_id),
-    # 								And(
-    # 									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[0]))),
-    # 									Box_a(str(agent.unique_id), Atom(str(self.model.spies_ids[1])))))
-    # 			excluded_nodes = hypothetical_model.nodes_not_follow_formula(new_formula)
-    #
-    # 			if len(excluded_nodes) == 0:  # Meaning that in all worlds, a resistance members knows both spies
-    # 				vote = "no"
-    # 			print(f"Results for agent {agent.unique_id} and spy {self.model.spies_ids[1]}:")
-    # 			print(f"Original							: {self.model.kripke_model.ks.get_power_set_of_worlds()}")
-    # 			print(f"Hypothetical						: {hypothetical_model.get_power_set_of_worlds()}")
-    # 			print(f"Worlds in which spies are not known	: {str(excluded_nodes)}")
-    # 		return vote
-
     def play_card_0th_order(self):
+        '''
+        Decision of the agent on whether to play the "fail" card. For 0th-order reasoning, this is always fail
+        :return: The decision
+        '''
         return "Fail"
 
     def play_card_2nd_order(self):
+        '''
+        Decision of the agent on whether to play the "fail" card. For 2nd-order reasoning, the agent will not play a
+        "fail" card if the agent knows that a member of the resistance would know who both of the spies are. Under all
+        other circumstances, it plays a "fail" card
+        :return: The decision
+        '''
         if self.model.debugging:
             print("The spies are now using higher order knowledge")
         mission_team = self.model.mission_team
@@ -155,6 +138,10 @@ class Spy(AbstractAgent):
         return card
 
     def number_of_spies_on_team(self):
+        '''
+        A helper function used to determine the current number of spies on a team
+        :return: The number of spies on the team
+        '''
         team = self.model.mission_team
         number_of_spies = 0
         for agent in team:
@@ -163,6 +150,10 @@ class Spy(AbstractAgent):
         return number_of_spies
 
     def get_non_spies(self):
+        '''
+        A helper function to retrieve all of the non spies
+        :return: A list with all of the non-spies.
+        '''
         non_spies = []
         for agent in self.model.schedule.agents:
             if agent.unique_id not in self.model.spies_ids:

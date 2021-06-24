@@ -13,10 +13,6 @@ class AbstractAgent(Agent):
         self.updateKB()
         self.updateMissionPreference()
 
-    def initKB(self):
-        print(f"initKB not properly implemented in child class of AbstractAgent")
-        pass
-
     def updateKB(self):
         print(f"updateKB not properly implemented in child class of AbstractAgent")
         pass
