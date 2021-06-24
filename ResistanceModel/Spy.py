@@ -125,7 +125,8 @@ class Spy(AbstractAgent):
 		return "Fail"
 
 	def play_card_2nd_order(self):
-		print("The spies are now using higher order knowledge")
+		if self.model.debugging:
+			print("The spies are now using higher order knowledge")
 		mission_team = self.model.mission_team
 		if len(mission_team) == 2:
 			formula = Or(Atom(str(mission_team[0])), Atom(str(mission_team[1])))

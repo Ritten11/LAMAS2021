@@ -102,7 +102,8 @@ class Resistance(AbstractAgent):
 		This function helps the agent learn from the votes of agents for the mission.
 		If an agent voted for a mission that failed, then that agent may be a spy.
 		'''
-		print("The resistance is now using higher order knowledge")
+		if self.model.debugging:
+			print("The resistance is now using higher order knowledge")
 		if self.model.failed: 
 			yes_votes = []
 			for agent in self.model.schedule.agents:

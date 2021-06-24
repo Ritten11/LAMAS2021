@@ -59,6 +59,7 @@ class ResistanceModel(Model):
         self.state = None
         self.announcement = None
         self.running = True
+        self.ui_message = "New model is initialized"
 
         # self.dataCollector = DataCollector(
         #     model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
@@ -94,6 +95,7 @@ class ResistanceModel(Model):
         if self.state == "choose_team":    
             self.set_mission_leader()  # mission leader is set
             self.try_leader += 1
+            self.ui_message = f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}. Current amount of tries: {self.try_leader}"
             if self.debugging:
                 print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             self.schedule.step()
@@ -101,25 +103,34 @@ class ResistanceModel(Model):
 
         elif self.state == "vote":
             self.schedule.step()
+            self.ui_message = f"The mission leader proposed the team: {str(self.mission_team)}"
             if self.check_vote_passed():
+                self.ui_message = f"The team was accepted."
+
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
+                self.ui_message = f"The team was not accepted. Returning to team selection."
                 if self.try_leader == 5:
+                    self.ui_message = f"Team selection failed too often. The spies automatically win this round."
                     self.rounds_won_spies[self.mission_number - 1] = 1
                     self.mission_number += 1
                     self.try_leader = 0
 
         elif self.state == "go_on_mission":
             self.schedule.step()
+            self.ui_message = "The team is currently on the mission."
             self.state = "play"
 
         elif self.state == "play":
             self.schedule.step()
+            ## TODO: add an if statement which determines which outcome is set as ui_message
+            self.ui_message = "The mission is completed -> THESE CARD WERE PLAYED _PLEASE HELP IMPLEMENTING THIS"
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
             self.announce_mission_result()
+            self.ui_message = "The following announcement has been made to the model: PLEASE HELP IMPLEMENTING"
             self.schedule.step()
             self.mission_number += 1
             self.try_leader = 0
@@ -127,12 +138,13 @@ class ResistanceModel(Model):
 
         elif self.state == "Game_over":
             self.running = False
-            print(f"Game over: spies got {sum(self.rounds_won_spies)}, resistance got {(self.mission_number-1)-sum(self.rounds_won_spies)}")
+
+            self.ui_message = f"Game over: spies got {sum(self.rounds_won_spies)}, resistance got {(self.mission_number-1)-sum(self.rounds_won_spies)}"
+            print(self.ui_message)
             print(self.game_end())
         
         if self.mission_number > len(self.team_sizes):
             self.state = "Game_over"
-            # self.dataCollector.collect(self)
 
         if self.debugging:
             print(f"state is {self.state}")
