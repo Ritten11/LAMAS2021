@@ -60,10 +60,16 @@ elif options.run_mode == 'batch':
                     "height": 5,
                     "width": 7,
                     "debug": options.debug}
-    variable_params = {"N": [5, 6],
-                       "ps": ['2', 'default', '3'],
-                       "sphok": [True, False],
+    variable_params = {"sphok": [True, False],
                        "rhok": [True, False]}
+    if options.number_of_agents == 5:
+        variable_params['ps'] = ['2', 'default', '3']
+        fixed_params['N'] = 5
+    # Running the batchrunner for 6 agents skips the party size as a variable parameter to reduce computation time.
+    elif options.number_of_agents == 6:
+
+        fixed_params['ps'] = 'default'
+        fixed_params['N'] = 6
 
     batch_run = BatchRunner(ResistanceModel,
                             variable_params,
@@ -74,17 +80,20 @@ elif options.run_mode == 'batch':
                                              "identity_revealed": get_identity_revealed})
     batch_run.run_all()
     run_data = batch_run.get_model_vars_dataframe()
+    print(f"---------------Dependent variables----------------")
     print(f"levels rounds_won: {run_data['rounds_won_spies'].unique()}")
     print(f"levels identity_revealed: {run_data['identity_revealed'].unique()}")
-    print(f"levels higher order knowledge: {run_data['hok'].unique()}")
-    print(f"levels ps: {run_data['ps'].unique()}")
+    print(f"----------------independent variables-------------")
     print(f"levels N: {run_data['N'].unique()}")
+    print(f"levels higher order knowledge spies: {run_data['sphok'].unique()}")
+    print(f"levels higher order knowledge resistance: {run_data['rhok'].unique()}")
+    print(f"levels ps: {run_data['ps'].unique()}")
     try:
         os.mkdir("results")
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    with open('results' + os.path.sep + 'output.json', 'w') as outfile:
+    with open('results' + os.path.sep + 'N_' + str(options.number_of_agents) + '_output.json', 'w') as outfile:
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
