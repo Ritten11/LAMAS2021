@@ -107,7 +107,8 @@ class ResistanceModel(Model):
             self.ui_message = f"The mission leader proposed the team: {str(self.mission_team)}"
             if self.check_vote_passed():
                 self.ui_message = f"The team was accepted."
-                played = [agent.card for agent in self.schedule.agents if agent.card != None]
+                votes = [(agent.unique_id, agent.vote) for agent in self.schedule.agents]
+                print(str(votes))
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
@@ -188,7 +189,7 @@ class ResistanceModel(Model):
         if self.failed: 
             yes_votes = []
             no_votes = []
-            for agent in self.model.schedule.agents:
+            for agent in self.schedule.agents:
                 if agent.vote == "Yes":
                     yes_votes.append(agent.unique_id)
                 if agent.vote == "No":
@@ -201,12 +202,6 @@ class ResistanceModel(Model):
                 formula = temp[0]
                 for i in range(1,len(temp)+1):
                     formula = And(formula, temp[i])
-            '''formula = Or(Or(temp[0], temp[1]), temp[2])
-                                                if len(yes_votes) == 4: 
-                                                    formula = Or(formula, temp[3])
-                                                if len(yes_votes) == 5:
-                                                    formula = Or(Or(formula, temp[3]), temp[4])'''
-                
                 print(formula)
                 self.announcement = formula
                 self.kripke_model.ks = self.kripke_model.ks.solve(formula)
