@@ -70,7 +70,7 @@ The Resistance will win this game. They will vote against a mission team includi
     - **Resistance**: a resistance agent does not want to send a spy on a mission, as this can cause the mission to fail. Using the Kripke model, we determine whether the agent knows the identity of one or both of the spies. If they do know a spy's identity, the agent will avoid choosing this agent for the team. To form the team, the agent will choose themselves, as they know their own identity, and any agent they are not certain is a spy.
     - **Spy**: a spy aims to sabotage the mission. This means a spy wants to choose a mission team that will not be voted down by the rest of the agents. Therefore, the spy must determine whether the identity of a spy has been revealed to any of the agents, whether the spy knows that another agent knows a spy. This is done using the Kripke model. If one spy's identity is known by an agent, the mission leader chooses the other spy for the mission and randomly fills the rest of the mission with resistance agents. If both identities are known, the team leader randomly chooses a spy for the mission, as they do not want to end up with a mission consisting of only resistance agents.
   - **Vote on the team make-up**: Each agent casts a vote. Again, it is important whether an agent is a Resistance member or a spy.
-    - **Resistance**: A Resistance member will agree with a team make-up when there are no spies in this team make-up. We check this by checking if _K<sub>a</sub>s<sub>b</sub>_, where _a_ is the Resistance agent deciding on the vote, and _b_ is the agent that _a_ is considering for the mission team.
+    - **Resistance**: A Resistance member will agree with a team composition when there are no spies on the team. We determine this by checking whether _K<sub>a</sub>s<sub>b</sub>_ is true, where _a_ is the Resistance agent deciding on the vote, and _b_ is the agent that _a_ is considering for the mission team.
       If _K<sub>a</sub>s<sub>b</sub>_ is true for any agent _b_ in the mission team, the Resistance agent _a_ will vote _against_ this mission. If _K<sub>a</sub>s<sub>b</sub>_ is not true for all agents _b_ in the mission team, the Resistance agent votes _for_ the mission team.
     - **Spy**: 
   - **Playing the cards**: The card played by an agent is dependent on whether the agent is a spy or Resistance member.
@@ -84,27 +84,32 @@ The Resistance will win this game. They will vote against a mission team includi
       - One fail card and pass cards: this means that one spy was on the mission. The announcement would be that one of the agents one the mission is a spy. 
       - Two fail cards and one or more pass cards: this means that two spies were on the mission with one or more resistance members. The announcement here would be that two of the agents on the mission are spies. 
       - Only pass cards: the announcement for this situation depends on whether the spies are using epistemic logic (as explained above) to choose the card they play. With reasoning spies, nothing can be determined on a passed mission as the spies can play pass-cards to avoid detection. With non-reasoning spies, the announcement would be that all agents on the mission are not spies.
-    - **Resistance reasoning**: The resistance agents can reflect on who voted for a mission that failed. For a mission to be sabotaged, a spy must be on the mission. This means that the spies would be in favour of that mission team and would have voted for it. Therefore, a resistance agent can use that information to weed out the identity of the spies. This involves updating the Kripke model with an announcement based on the knowledge of the agent.
+    - **Resistance reasoning**: The resistance agents can reflect on who voted for a mission that failed. For a mission to be sabotaged, a spy must be on the mission. If there are any agents that know the identity of the spy on the mission, they would vote against that mission. Therefore, a resistance agent can use that information to learn the idenity of a fellow resistance agent, which can help them weed out the identity of the spies. This involves updating the Kripke model with an announcement based on the knowledge of the agent.
 
 ## Experiments
-  We run several experiments, where we vary different settings. The first setting is one that is varied for both of the other two experiments, meaning we have 10 experiments in total: (3 + 2) * 2. As the quantifiable evaluation metric, we use the percentage of games that are won by the Resistance. The settings we vary are the following: 
-  1. **Spies reason about a fail-card using second-order knowledge vs. Spies always play a fail-card**: We find that the most important part of this project is using knowledge. As such, we have decided that for each of the other experiments we do, we want to see how knowledge would influence the outcome of the game. In a simplified version of the game, spies always play a fail-card. This means that whenever there is a spy on the mission, the mission will automatically fail, and the spies gain a point. However, this also gives away information on the identity of the spies. In the version where spies reason about whether to play a fail-card, spies try to find out whether playing a fail-card would cause a Resistance agent to be sure of the identity of the spy. If this is the case, a spy does *not* play a fail-card; else, the spy does.
-  2. **Every mission has teams of 2 vs. Every mission has teams of 3 vs. The number of team members is as described in the rules**: We vary the number of people on a mission such that we have three settings: [2, 2, 2, 2, 2] (2 people on each mission), [3, 3, 3, 3, 3] (three people on each mission), and [2, 3, 2, 3, 3] (as is described in the rules).
-  3. **5 players vs. 6 players**: In both settings, there are only two spies - the rules state that the number of spies is a third of the total number of players, rounded up. We are interested in seeing how the extra Resistance-member influences the knowledge and overall gameplay.
+  We run several experiments, where we vary different parameters: 
+
+  1. **Number of players (N)**: There are two possibilities for this parameter, namely 5 players or 6 players. In either case, there are only two spies, as the rules of the game state that the number of spies is a third of the total number of players rounded up. We want to vary this as we are interested in seeing how the extra Resistance member influences the knowledge and overall gameplay.
+
+  2. **Spies use higher order knowledge for card playing (SPHOK)**: As an important aspect of this project is using higher order knowledge, we wanted to implement this to allow spies to consider between playing a pass-card or a fail-card. We will compare the spies using higher order knowledge with the spies always playing a fail-card as we want to see how knowledge influences the outcome of the game. The spies always playing a fail-card leads to the mission failing, which in turn gives away information on the identity of the spies. In the version where spies reason about whether to play a fail-card, spies try to find out whether playing a fail-card would cause a Resistance agent to be sure of the identity of the spy. If this is the case, a spy plays a pass-card and otherwise they play a fail-card.
+
+  3. **Resistance uses higher order knowledge (RHOK)**: We also wanted to implement some additional higher order knowledge for the resistance agents. As explained prevously, the resistance agents can use the outcome of the voting round of a failed mission to try to determine the identity of the spies.
+
+  4. **Mission team sizes (PS)**: The rules of the game state that for 5 players the team sizes for the 5 missions are [2, 3, 2, 3, 3]. We are interested in seeing whether changing the team sizes has any influence on the outcome of the game. Therefore, we decided to also include the team sizes [2, 2, 2, 2, 2] and [3, 3, 3, 3, 3] for the 5 missions. For 6 players the team sizes are [2, 3, 4, 3, 4], which we did not vary.
+
+  We ran the simulation for each setting 10 times to retrieve an average performance for the agents. From our experiments we measured the following: 
+  1. The round in which the identity of the spies is clear (revealed) to all Resistance agents.
+  2. The number of rounds which the spies have won.
 
 # Results
-We have measured two things:
-
-1. The round in which the identity of the spies is clear (revealed) to the Resistance agents.
-2. The number of rounds which the spies have won.
-
 We will go through these results separately, but first we have to explain a few abbreviations that we will come across several times while describing these results:
 - _N_ stands for the number of agents that take part  in a game - this is always either 5 or 6.
 - _SPHOK_ means _spies higher order knowledge_, meaning that the spies either do or do not use higher order reasoning to determine whether to play a fail card.
-- _RHOK_ means _Resistance higher order knowledge_, ...
+- _RHOK_ means _Resistance higher order knowledge_, meaning that the resistance either does or does not use higher order reasoning using the outcome of a voting round for a failed mission.
 - _PS_ means _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
 
-## Identity reveal
+## Identity revealed
+The table below shows the average epoch at which the identity of both spies was revealed to all resistance agents. 
 
 |   N | SPHOK   | RHOK   | PS   |   average |
 |----:|:--------|:-------|:-----|----------:|
@@ -125,11 +130,11 @@ We will go through these results separately, but first we have to explain a few 
 |   6 | False   | True   | def  |       3.2 |
 |   6 | False   | False  | def  |       2.3 |
 
-## Spies winning
+## Rounds won by the spies
 
-![Image](images/results_n5.png)
+![Image](images/results_n5.png) ![Image](images/results_n6.png)
 ![Image](images/results_subn5.png)
-![Image](images/results_n6.png)
+
 # Conclusion
 
 # Running instructions
