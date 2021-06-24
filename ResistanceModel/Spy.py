@@ -23,13 +23,15 @@ class Spy(AbstractAgent):
 			if self.model.mission_leader == self.unique_id:
 				self.model.grid.move_agent(self, (self.unique_id, 2))
 				self.model.mission_team = self.choose_team()
-				print(f"team is {self.model.mission_team}")
+				if self.model.debugging:
+					print(f"team is {self.model.mission_team}")
 			else:
 				self.model.grid.move_agent(self, (self.unique_id, 0))
 
 		if self.model.state == "vote":
 			self.vote = self.decide_on_vote_0th_order()
-			print(f"Agent {self.unique_id} voted {self.vote}")
+			if self.model.debugging:
+				print(f"Agent {self.unique_id} voted {self.vote}")
 
 		if self.model.state == "go_on_mission":
 			if self.unique_id in self.model.mission_team:
@@ -41,12 +43,11 @@ class Spy(AbstractAgent):
 					self.card = self.play_card_2nd_order()
 				else:
 					self.card = self.play_card_0th_order()
-				print(f"{self.card} card is played by {self.unique_id}")
+				if self.model.debugging:
+					print(f"{self.card} card is played by {self.unique_id}")
 		   
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
-			#self.updateKB()
-
 
 	def choose_team(self):
 		'''
