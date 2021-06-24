@@ -59,6 +59,7 @@ class ResistanceModel(Model):
         self.state = None
         self.announcement = None
         self.running = True
+        self.ui_message = "New model is initialized"
 
         # self.dataCollector = DataCollector(
         #     model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
@@ -94,45 +95,64 @@ class ResistanceModel(Model):
         if self.state == "choose_team":    
             self.set_mission_leader()  # mission leader is set
             self.try_leader += 1
+            self.ui_message = f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}. Current amount of tries: {self.try_leader}"
             if self.debugging:
                 print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             self.schedule.step()
+            # TODO: include the mission team
             self.state = "vote"
 
         elif self.state == "vote":
             self.schedule.step()
+            self.ui_message = f"The mission leader proposed the team: {str(self.mission_team)}"
             if self.check_vote_passed():
+                self.ui_message = f"The team was accepted."
+
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
+                self.ui_message = f"The team was not accepted. Returning to team selection."
                 if self.try_leader == 5:
+                    self.ui_message = f"Team selection failed too often. The spies automatically win this round."
                     self.rounds_won_spies[self.mission_number - 1] = 1
                     self.mission_number += 1
                     self.try_leader = 0
 
         elif self.state == "go_on_mission":
             self.schedule.step()
+            self.ui_message = "The team is currently on the mission."
             self.state = "play"
 
         elif self.state == "play":
             self.schedule.step()
+            played = [agent.card for agent in self.schedule.agents if agent.card != None]
+            ## TODO: add an if statement which determines which outcome is set as ui_message
+            self.ui_message = "The mission is completed -> THESE CARD WERE PLAYED _PLEASE HELP IMPLEMENTING THIS"
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
             self.announce_mission_result()
+            self.ui_message = f"The following announcement has been made to the model: {self.announcement}"
+            if self.resistance_reasons:
+                formula = self.announce_voting_reasoning()
+                if formula:
+                    self.ui_message += f"<br>Additionally, the resistance agents have learned the following from the voting round: {formula}"
+
             self.schedule.step()
+
             self.mission_number += 1
             self.try_leader = 0
             self.state = "choose_team"
 
         elif self.state == "Game_over":
             self.running = False
-            print(f"Game over: spies got {sum(self.rounds_won_spies)}, resistance got {(self.mission_number-1)-sum(self.rounds_won_spies)}")
+
+            self.ui_message = f"Game over: spies got {sum(self.rounds_won_spies)}, resistance got {(self.mission_number-1)-sum(self.rounds_won_spies)}"
+            print(self.ui_message)
             print(self.game_end())
         
         if self.mission_number > len(self.team_sizes):
             self.state = "Game_over"
-            # self.dataCollector.collect(self)
 
         if self.debugging:
             print(f"state is {self.state}")
@@ -159,6 +179,35 @@ class ResistanceModel(Model):
         for agent in self.schedule.agents:
             votes.append(agent.vote)
         return True if votes.count("Yes") >= votes.count("No") else False
+
+    def announce_voting_reasoning(self):
+        '''
+        This function helps the agent learn from the votes of agents for the mission.
+        If an agent voted for a mission that failed, then that agent may be a spy.
+        '''
+        formula = None
+        if self.debugging:
+            print("The resistance is now using higher order knowledge")
+        if self.failed: 
+            yes_votes = []
+            no_votes = []
+            for agent in self.schedule.agents:
+                if agent.vote == "Yes":
+                    yes_votes.append(agent.unique_id)
+                if agent.vote == "No":
+                    no_votes.append(agent.unique_id)
+            print(f"yes: {yes_votes}")
+            print(f"no: {no_votes}")
+
+            if len(no_votes) > 0:
+                temp = [Not(Atom(str(a))) for a in no_votes]
+                formula = temp[0]
+                if len(no_votes) > 1:
+                    for i in range(1,len(temp)+1):
+                        formula = And(formula, temp[i])
+                print(formula)
+                self.kripke_model.ks = self.kripke_model.ks.solve(formula)
+        return formula
     
     def announce_mission_result(self):
         '''
