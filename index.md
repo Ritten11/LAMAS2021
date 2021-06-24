@@ -113,11 +113,11 @@ The table below shows the average epoch at which the identity of both spies was 
 
 |   N | SPHOK   | RHOK   | PS   |   not revealed |   average |
 |----:|:--------|:-------|:-----|---------------:|----------:|
-|   5 | True    | True   | 2    |             10 |   0       |
+|   5 | True    | True   | 2    |             10 |   NA      |
 |   5 | True    | True   | def  |              9 |   5       |
 |   5 | True    | True   | 3    |              8 |   5       |
-|   5 | True    | False  | 2    |             10 |   0       |
-|   5 | True    | False  | def  |             10 |   0       |
+|   5 | True    | False  | 2    |             10 |   NA      |
+|   5 | True    | False  | def  |             10 |   NA      |
 |   5 | True    | False  | 3    |              9 |   5       |
 |   5 | False   | True   | 2    |              0 |   3.4     |
 |   5 | False   | True   | def  |              0 |   3.9     |
