@@ -99,19 +99,24 @@ class ResistanceModel(Model):
             if self.debugging:
                 print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             self.schedule.step()
-            # TODO: include the mission team
+            self.ui_message = f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}. " \
+                              f"The proposed team is {self.mission_team}. Current amount of tries: {self.try_leader}"
             self.state = "vote"
 
         elif self.state == "vote":
             self.schedule.step()
             self.ui_message = f"The mission leader proposed the team: {str(self.mission_team)}"
             if self.check_vote_passed():
-                self.ui_message = f"The team was accepted."
-
+                self.ui_message = f"The team was accepted. The agents voted:"
+                for agent in self.schedule.agents:
+                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
-                self.ui_message = f"The team was not accepted. Returning to team selection."
+                self.ui_message = f"The team was rejected. The agents voted:"
+                for agent in self.schedule.agents:
+                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
+                self.ui_message += f"<br> A new team leader needs to be selected."
                 if self.try_leader == 5:
                     self.ui_message = f"Team selection failed too often. The spies automatically win this round."
                     self.rounds_won_spies[self.mission_number - 1] = 1
@@ -126,8 +131,7 @@ class ResistanceModel(Model):
         elif self.state == "play":
             self.schedule.step()
             played = [agent.card for agent in self.schedule.agents if agent.card != None]
-            ## TODO: add an if statement which determines which outcome is set as ui_message
-            self.ui_message = "The mission is completed -> THESE CARD WERE PLAYED _PLEASE HELP IMPLEMENTING THIS"
+            self.ui_message = f"The mission is completed. Cards played during this mission: {played}"
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
@@ -208,7 +212,7 @@ class ResistanceModel(Model):
                 print(formula)
                 self.kripke_model.ks = self.kripke_model.ks.solve(formula)
         return formula
-    
+
     def announce_mission_result(self):
         '''
         This function announces the result of the mission. 
