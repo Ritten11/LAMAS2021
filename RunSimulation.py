@@ -20,14 +20,17 @@ def init_argparse() -> argparse.ArgumentParser:
                         choices=['gui', 'batch'],
                         help="Specify what mode you want to run the simulation in")
     parser.add_argument('-ps', '--party_size', default='default', type=str,
-                        choices=['2', 'default', '3'],
-                        help="Specify how big the mission parties should be. Use the default for the original game settings")
+                        choices=['2', 'def', '3'],
+                        help="Specify how big the mission parties should be. \
+                             Use the default for the original game settings")
     parser.add_argument('-sphok', '--spies_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the spies should use higher order knowledge")
     parser.add_argument('-rhok', '--resistance_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the resistance should use higher order knowledge")
-    parser.add_argument('-iter', '--iterations', default=10, type=int, choices=[1, 2, 5, 10, 15, 20],
-                        help='Specify the number of iterations for each condition when running the simulation in batch mode')
+    parser.add_argument('-iter', '--iterations', default=10, type=int,
+                        choices=[1, 2, 5, 10, 15, 20],
+                        help='Specify the number of iterations for each \
+                        condition when running the simulation in batch mode')
     parser.add_argument('-debug', default=False, type=bool,
                         help="Set to true when debugging")
     return parser
@@ -38,21 +41,23 @@ options = parser.parse_args()
 args = vars(options)
 
 
-
 def get_identity_revealed(model):
+    """Returns the round number at which the spies' identity was revealed"""
     return model.identity_revealed
 
 
-def get_mission_results(model):  # transform the bit-array into the corresponding integer.
-    return 16*model.rounds_won_spies[0] + \
-           8*model.rounds_won_spies[1] + \
-           4*model.rounds_won_spies[2] + \
-           2*model.rounds_won_spies[3] + \
-           model.rounds_won_spies[4]
+def get_mission_results(model):
+    """Returns an integer in bit-form indicating which rounds the spies won"""
+    s = ""
+    for i in model.rounds_won_spies:
+        s = s + str(i)
+    return int(s)
+
 
 if options.run_mode == 'gui':
     server = ModelServer(N=options.number_of_agents, ps=options.party_size, debug=options.debug,
-                         sphok=options.spies_higher_order_knowledge, rhok=options.resistance_higher_order_knowledge)
+                         sphok=options.spies_higher_order_knowledge,
+                         rhok=options.resistance_higher_order_knowledge)
 
     server.run_server()
 elif options.run_mode == 'batch':
@@ -63,12 +68,13 @@ elif options.run_mode == 'batch':
     variable_params = {"sphok": [True, False],
                        "rhok": [True, False]}
     if options.number_of_agents == 5:
-        variable_params['ps'] = ['2', 'default', '3']
+        variable_params['ps'] = ['2', 'def', '3']
         fixed_params['N'] = 5
-    # Running the batchrunner for 6 agents skips the party size as a variable parameter to reduce computation time.
+    # Running the batchrunner for 6 agents skips the party size as a
+    # variable parameter to reduce computation time.
     elif options.number_of_agents == 6:
 
-        fixed_params['ps'] = 'default'
+        fixed_params['ps'] = 'def'
         fixed_params['N'] = 6
 
     batch_run = BatchRunner(ResistanceModel,
@@ -93,11 +99,11 @@ elif options.run_mode == 'batch':
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    with open('results' + os.path.sep + 'N_' + str(options.number_of_agents) + '_output.json', 'w') as outfile:
+    with open('results' + os.path.sep + 'N_' + str(options.number_of_agents) +
+              '_output.json', 'w') as outfile:
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
 # server = ModelServer()
 #
 # server.run_server()
-
