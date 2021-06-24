@@ -107,13 +107,16 @@ class ResistanceModel(Model):
             self.schedule.step()
             self.ui_message = f"The mission leader proposed the team: {str(self.mission_team)}"
             if self.check_vote_passed():
-                self.ui_message = f"The team was accepted."
-                votes = [(agent.unique_id, agent.vote) for agent in self.schedule.agents]
-                print(str(votes))
+                self.ui_message = f"The team was accepted. The agents voted:"
+                for agent in self.schedule.agents:
+                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
-                self.ui_message = f"The team was not accepted. Returning to team selection."
+                self.ui_message = f"The team was rejected. The agents voted:"
+                for agent in self.schedule.agents:
+                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
+                self.ui_message += f"<br> A new team leader needs to be selected."
                 if self.try_leader == 5:
                     self.ui_message = f"Team selection failed too often. The spies automatically win this round."
                     self.rounds_won_spies[self.mission_number - 1] = 1

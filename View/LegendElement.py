@@ -27,22 +27,13 @@ class LegendElement(TextElement):
             <div class="agent" style="background-color: red">
             </div>
             <p>
-            There are several settings that influence the working of the game. Changing these settings can be done by
-            running 'python3 RunSimulation.py' with the appropriate flags. Run 'python3 RunSimulation.py -h' for more 
-            information
-            <h4>Current settings</h4>
-            Number of agents: """ + str(model.num_agents) + """ <br>
-            Size of the mission parties: """ + str(model.ps) + """  <br>
-            Use of higher order knowledge of the resistance: """ + str(model.resistance_reasons) + """ <br>
-            Use of higher order knowledge of the spies: """ + str(model.spy_reasons) + """ <br>
-            </div>
             <style>
             .agent {
                 height: 30px;
                 width: 30px;
                 border-radius: 50%;
                 display: inline-block;
-                border: 1px solid;
+                border: 0px solid;
             }
             #elements #legend {
                 display: none;
