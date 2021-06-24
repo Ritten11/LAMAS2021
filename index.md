@@ -72,7 +72,7 @@ The Resistance will win this game. They will vote against a mission team includi
   - **Vote on the team make-up**: Each agent casts a vote. Again, it is important whether an agent is a Resistance member or a spy.
     - **Resistance**: A Resistance member will agree with a team composition when there are no spies on the team. We determine this by checking whether _K<sub>a</sub>s<sub>b</sub>_ is true, where _a_ is the Resistance agent deciding on the vote, and _b_ is the agent that _a_ is considering for the mission team.
       If _K<sub>a</sub>s<sub>b</sub>_ is true for any agent _b_ in the mission team, the Resistance agent _a_ will vote _against_ this mission. If _K<sub>a</sub>s<sub>b</sub>_ is not true for all agents _b_ in the mission team, the Resistance agent votes _for_ the mission team.
-    - **Spy**: 
+    - **Spy**: The spies always want at least one of the spies to be on the mission. Therefore, the spies vote against team compositions without any spies in them. If there is a spy within the team, they vote in favour.
   - **Playing the cards**: The card played by an agent is dependent on whether the agent is a spy or Resistance member.
     - **Resistance**: a Resistance agent will always play a pass-card
     - **Spy**: the card played by a spy depends on whether the spies are using epistemic logic to make their decision.
@@ -111,24 +111,24 @@ We will go through these results separately, but first we have to explain a few 
 ## Identity revealed
 The table below shows the average epoch at which the identity of both spies was revealed to all resistance agents. 
 
-|   N | SPHOK   | RHOK   | PS   |   not revealed |   average |
-|----:|:--------|:-------|:-----|---------------:|----------:|
-|   5 | True    | True   | 2    |             10 |   0       |
-|   5 | True    | True   | def  |              9 |   5       |
-|   5 | True    | True   | 3    |              8 |   5       |
-|   5 | True    | False  | 2    |             10 |   0       |
-|   5 | True    | False  | def  |             10 |   0       |
-|   5 | True    | False  | 3    |              9 |   5       |
-|   5 | False   | True   | 2    |              0 |   3.4     |
-|   5 | False   | True   | def  |              0 |   3.9     |
-|   5 | False   | True   | 3    |              2 |   3       |
-|   5 | False   | False  | 2    |              1 |   3.44444 |
-|   5 | False   | False  | def  |              1 |   3       |
-|   5 | False   | False  | 3    |              3 |   3.28571 |
-|   6 | True    | True   | def  |              9 |   4       |
-|   6 | True    | False  | def  |              8 |   4.5     |
-|   6 | False   | True   | def  |              1 |   3.55556 |
-|   6 | False   | False  | def  |              3 |   3.28571 |
+|   N | SPHOK   | RHOK   | PS   |   average |
+|----:|:--------|:-------|:-----|----------:|
+|   5 | True    | True   | 2    |       0   |
+|   5 | True    | True   | def  |       0.5 |
+|   5 | True    | True   | 3    |       1   |
+|   5 | True    | False  | 2    |       0   |
+|   5 | True    | False  | def  |       0   |
+|   5 | True    | False  | 3    |       0.5 |
+|   5 | False   | True   | 2    |       3.4 |
+|   5 | False   | True   | def  |       3.9 |
+|   5 | False   | True   | 3    |       2.4 |
+|   5 | False   | False  | 2    |       3.1 |
+|   5 | False   | False  | def  |       2.7 |
+|   5 | False   | False  | 3    |       2.3 |
+|   6 | True    | True   | def  |       0.4 |
+|   6 | True    | False  | def  |       0.9 |
+|   6 | False   | True   | def  |       3.2 |
+|   6 | False   | False  | def  |       2.3 |
 
 ## Rounds won by the spies
 
