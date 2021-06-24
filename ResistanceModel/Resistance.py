@@ -48,8 +48,6 @@ class Resistance(AbstractAgent):
 		   
 		if self.model.state == "update_knowledge":
 			self.model.grid.move_agent(self, (self.unique_id, 0))
-			if self.model.resistance_reasons:
-				self.updateKB()
 
 	def choose_team(self):
 		'''
@@ -96,25 +94,3 @@ class Resistance(AbstractAgent):
 				return False
 
 		return True
-
-	def updateKB(self):
-		'''
-		This function helps the agent learn from the votes of agents for the mission.
-		If an agent voted for a mission that failed, then that agent may be a spy.
-		'''
-		if self.model.debugging:
-			print("The resistance is now using higher order knowledge")
-		if self.model.failed: 
-			yes_votes = []
-			for agent in self.model.schedule.agents:
-				if agent.vote == "Yes":
-					yes_votes.append(agent.unique_id)
-			print(yes_votes)
-			temp = [Atom(str(a)) for a in yes_votes]
-			formula = Or(Or(temp[0], temp[1]), temp[2])
-			if len(yes_votes) == 4: 
-				formula = Or(formula, temp[3])
-			if len(yes_votes) == 5:
-				formula = Or(Or(formula, temp[3]), temp[4])
-			print(formula)
-			self.model.kripke_model.ks = self.model.kripke_model.ks.solve(formula)
