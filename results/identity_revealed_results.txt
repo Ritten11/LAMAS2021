@@ -1,0 +1,18 @@
+|   N | SPHOK   | RHOK   | PS   |   average |
+|----:|:--------|:-------|:-----|----------:|
+|   5 | True    | True   | 2    |       0   |
+|   5 | True    | True   | def  |       0.5 |
+|   5 | True    | True   | 3    |       1   |
+|   5 | True    | False  | 2    |       0   |
+|   5 | True    | False  | def  |       0   |
+|   5 | True    | False  | 3    |       0.5 |
+|   5 | False   | True   | 2    |       3.4 |
+|   5 | False   | True   | def  |       3.9 |
+|   5 | False   | True   | 3    |       2.4 |
+|   5 | False   | False  | 2    |       3.1 |
+|   5 | False   | False  | def  |       2.7 |
+|   5 | False   | False  | 3    |       2.3 |
+|   6 | True    | True   | def  |       0.4 |
+|   6 | True    | False  | def  |       0.9 |
+|   6 | False   | True   | def  |       3.2 |
+|   6 | False   | False  | def  |       2.3 |
