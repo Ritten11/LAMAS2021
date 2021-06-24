@@ -134,8 +134,9 @@ class ResistanceModel(Model):
             self.announce_mission_result()
             self.ui_message = f"The following announcement has been made to the model: {self.announcement}"
             if self.resistance_reasons:
-                self.announce_voting_reasoning()
-                self.ui_message += f"<br>Additionally, the resistance agents have learned the following from the voting round: {self.announcement}"
+                formula = self.announce_voting_reasoning()
+                if formula:
+                    self.ui_message += f"<br>Additionally, the resistance agents have learned the following from the voting round: {formula}"
 
             self.schedule.step()
 
@@ -184,12 +185,13 @@ class ResistanceModel(Model):
         This function helps the agent learn from the votes of agents for the mission.
         If an agent voted for a mission that failed, then that agent may be a spy.
         '''
+        formula = None
         if self.debugging:
             print("The resistance is now using higher order knowledge")
         if self.failed: 
             yes_votes = []
             no_votes = []
-            for agent in self.model.schedule.agents:
+            for agent in self.schedule.agents:
                 if agent.vote == "Yes":
                     yes_votes.append(agent.unique_id)
                 if agent.vote == "No":
@@ -200,17 +202,12 @@ class ResistanceModel(Model):
             if len(no_votes) > 0:
                 temp = [Not(Atom(str(a))) for a in no_votes]
                 formula = temp[0]
-                for i in range(1,len(temp)+1):
-                    formula = And(formula, temp[i])
-            '''formula = Or(Or(temp[0], temp[1]), temp[2])
-                                                if len(yes_votes) == 4: 
-                                                    formula = Or(formula, temp[3])
-                                                if len(yes_votes) == 5:
-                                                    formula = Or(Or(formula, temp[3]), temp[4])'''
-                
+                if len(no_votes) > 1:
+                    for i in range(1,len(temp)+1):
+                        formula = And(formula, temp[i])
                 print(formula)
-                self.announcement = formula
                 self.kripke_model.ks = self.kripke_model.ks.solve(formula)
+        return formula
     
     def announce_mission_result(self):
         '''
