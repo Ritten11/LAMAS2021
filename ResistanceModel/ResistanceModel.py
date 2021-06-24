@@ -99,6 +99,7 @@ class ResistanceModel(Model):
             if self.debugging:
                 print(f"The mission leader of mission {self.mission_number} is agent {self.mission_leader}: try {self.try_leader}")
             self.schedule.step()
+            # TODO: include the mission team
             self.state = "vote"
 
         elif self.state == "vote":
@@ -124,13 +125,14 @@ class ResistanceModel(Model):
 
         elif self.state == "play":
             self.schedule.step()
+            played = [agent.card for agent in self.schedule.agents if agent.card != None]
             ## TODO: add an if statement which determines which outcome is set as ui_message
             self.ui_message = "The mission is completed -> THESE CARD WERE PLAYED _PLEASE HELP IMPLEMENTING THIS"
             self.state = "update_knowledge"
 
         elif self.state == "update_knowledge":
             self.announce_mission_result()
-            self.ui_message = "The following announcement has been made to the model: PLEASE HELP IMPLEMENTING"
+            self.ui_message = f"The following announcement has been made to the model: {self.announcement}"
             self.schedule.step()
             self.mission_number += 1
             self.try_leader = 0
