@@ -10,22 +10,46 @@ def read_data(n):
 def get_results(df1, df2):
     s1 = [df1['sphok'].unique(), df1['rhok'].unique(), df1['ps'].unique()]
     p1 = list(itertools.product(*s1))
-    df = pd.DataFrame(columns=['N', 'SPHOK', 'RHOK', 'PS', 'average'])
+    df = pd.DataFrame(columns=['N', 'SPHOK', 'RHOK', 'PS', 'not revealed', 'average'])
 
     for i, combo in enumerate(p1):
         numbers = df1.query(f'sphok == {combo[0]} and rhok == {combo[1]}'
                               f' and ps == "{str(combo[2])}"')['identity_revealed']
-        avg = sum(numbers)/len(numbers)
-        df = df.append({'N': 5, 'SPHOK': combo[0], 'RHOK': combo[1], 'PS': combo[2], 'average':avg},
-                       ignore_index=True)
+        no_reveal = 0
+        num = 0
+        den = 0
+        for n in numbers:
+            if n == 0:
+                no_reveal += 1
+            else:
+                num += n
+                den += 1
+        if den != 0:
+            avg = num / den
+        else:
+            avg = 0
+        df = df.append({'N': 5, 'SPHOK': combo[0], 'RHOK': combo[1], 'PS': combo[2],
+                        'not revealed': no_reveal, 'average':avg},ignore_index=True)
 
     s2 = [df1['sphok'].unique(), df1['rhok'].unique()]
     p2 = list(itertools.product(*s2))
     for j, combo2 in enumerate(p2):
         numbers = df2.query(f'sphok == {combo2[0]} and rhok == {combo2[1]}')['identity_revealed']
-        avg = sum(numbers)/len(numbers)
-        df = df.append({'N': 6, 'SPHOK': combo2[0], 'RHOK': combo2[1], 'PS': 'def', 'average':avg},
-                       ignore_index=True)
+        no_reveal = 0
+        num = 0
+        den = 0
+        for n in numbers:
+            if n == 0:
+                no_reveal += 1
+            else:
+                num += n
+                den += 1
+        if den != 0:
+            avg = num / den
+        else:
+            avg = 0
+        df = df.append({'N': 6, 'SPHOK': combo2[0], 'RHOK': combo2[1], 'PS': 'def',
+                        'not revealed': no_reveal, 'average':avg}, ignore_index=True)
 
     return df
 
