@@ -93,7 +93,43 @@ The Resistance will win this game. They will vote against a mission team includi
   3. **5 players vs. 6 players**: In both settings, there are only two spies - the rules state that the number of spies is a third of the total number of players, rounded up. We are interested in seeing how the extra Resistance-member influences the knowledge and overall gameplay.
 
 # Results
+We have measured two things:
 
+1. The round in which the identity of the spies is clear (revealed) to the Resistance agents.
+2. The number of rounds which the spies have won.
+
+We will go through these results separately, but first we have to explain a few abbreviations that we will come across several times while describing these results:
+- _N_ stands for the number of agents that take part  in a game - this is always either 5 or 6.
+- _SPHOK_ means _spies higher order knowledge_, meaning that the spies either do or do not use higher order reasoning to determine whether to play a fail card.
+- _RHOK_ means _Resistance higher order knowledge_, ...
+- _PS_ means _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
+
+## Identity reveal
+
+|   N | SPHOK   | RHOK   | PS   |   average |
+|----:|:--------|:-------|:-----|----------:|
+|   5 | True    | True   | 2    |       0   |
+|   5 | True    | True   | def  |       0.5 |
+|   5 | True    | True   | 3    |       1   |
+|   5 | True    | False  | 2    |       0   |
+|   5 | True    | False  | def  |       0   |
+|   5 | True    | False  | 3    |       0.5 |
+|   5 | False   | True   | 2    |       3.4 |
+|   5 | False   | True   | def  |       3.9 |
+|   5 | False   | True   | 3    |       2.4 |
+|   5 | False   | False  | 2    |       3.1 |
+|   5 | False   | False  | def  |       2.7 |
+|   5 | False   | False  | 3    |       2.3 |
+|   6 | True    | True   | def  |       0.4 |
+|   6 | True    | False  | def  |       0.9 |
+|   6 | False   | True   | def  |       3.2 |
+|   6 | False   | False  | def  |       2.3 |
+
+## Spies winning
+
+![Image](images/results_n5.png)
+![Image](images/results_subn5.png)
+![Image](images/results_n6.png)
 # Conclusion
 
 # Running instructions
