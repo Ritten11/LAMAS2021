@@ -111,26 +111,28 @@ We will go through these results separately, but first we have to explain a few 
 - _PS_ stands for _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
 
 ## Identity revealed
-The table below shows the average epoch at which the identity of both spies was revealed to all resistance agents. 
 
-|   N | SPHOK   | RHOK   | PS   |   not revealed |   average |
-|----:|:--------|:-------|:-----|---------------:|----------:|
-|   5 | True    | True   | 2    |             10 |   NA      |
-|   5 | True    | True   | def  |              9 |   5       |
-|   5 | True    | True   | 3    |              8 |   5       |
-|   5 | True    | False  | 2    |             10 |   NA      |
-|   5 | True    | False  | def  |             10 |   NA      |
-|   5 | True    | False  | 3    |              9 |   5       |
-|   5 | False   | True   | 2    |              0 |   3.4     |
-|   5 | False   | True   | def  |              0 |   3.9     |
-|   5 | False   | True   | 3    |              2 |   3       |
-|   5 | False   | False  | 2    |              1 |   3.44444 |
-|   5 | False   | False  | def  |              1 |   3       |
-|   5 | False   | False  | 3    |              3 |   3.28571 |
-|   6 | True    | True   | def  |              9 |   4       |
-|   6 | True    | False  | def  |              8 |   4.5     |
-|   6 | False   | True   | def  |              1 |   3.55556 |
-|   6 | False   | False  | def  |              3 |   3.28571 |
+| SPHOK   | RHOK   | PS   |   not revealed |   average |
+|:--------|:-------|:-----|---------------:|----------:|
+| True    | True   | 2    |             38 |   4.75    |
+| True    | True   | def  |             43 |   5       |
+| True    | True   | 3    |             36 |   3.71429 |
+| True    | False  | 2    |             44 |   5       |
+| True    | False  | def  |             44 |   5       |
+| True    | False  | 3    |             46 |   4.5     |
+| False   | True   | 2    |              1 |   3.4898  |
+| False   | True   | def  |              3 |   3.3617  |
+| False   | True   | 3    |             13 |   3.51351 |
+| False   | False  | 2    |              2 |   3.83333 |
+| False   | False  | def  |             15 |   3.62857 |
+| False   | False  | 3    |             21 |   3.51724 |
+
+| SPHOK   | RHOK   |   not revealed |   average |
+|:--------|:-------|---------------:|----------:|
+| True    | True   |             45 |   4.4     |
+| True    | False  |             46 |   4.5     |
+| False   | True   |             15 |   3.85714 |
+| False   | False  |             19 |   3.77419 |
 
 ## Rounds won by the spies
 
