@@ -161,17 +161,20 @@ def make_subcharts_5(df):
     plt.show()
 
 
-def make_line_chart_6(df):
+def make_line_chart_6(n5, n6):
     """Produces the line chart for 6 agents based on the dataframe"""
-    s = [df['sphok'].unique(), df['rhok'].unique()]
+    s = [n5['sphok'].unique(), n5['rhok'].unique()]
     p = list(itertools.product(*s))
-    l_all = []
+    l5 = []
+    l6 = []
     for combo in p:
-        l_all.append(df.query(f'sphok == {combo[0]} and rhok == {combo[1]}')['new_rounds_won'])
-
-    l_avg = calculate_average(l_all)
+        l6.append(n6.query(f'sphok == {combo[0]} and rhok == {combo[1]}')['new_rounds_won'])
+        l5.append(n5.query(f'sphok == {combo[0]} and rhok == {combo[1]} and '
+                            f'ps == "def"')['new_rounds_won'])
+    l5_avg = calculate_average(l5)
+    l6_avg = calculate_average(l6)
     x = [1, 2, 3, 4, 5]
-    plt.figure(figsize=(18, 12))
+    fig, axs = plt.subplots(1, 2, figsize=(22, 12))
     legend_elements = [
         Line2D([0], [0], color='orange', label='PS = default'),
         Line2D([0], [0], linestyle='solid', label='SPHOK = True', color='black'),
@@ -183,14 +186,22 @@ def make_line_chart_6(df):
     for i in range(4):
         sphok, rhok = p[i]
         line, mark, marks, markc, z = determine_style(sphok, rhok)
-        plt.plot(x, l_avg[i], linestyle=line, color='orange',
+        axs[0].plot(x, l5_avg[i], linestyle=line, color='orange',
                  marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
-    plt.legend(handles=legend_elements, loc='upper left')
-    plt.title('Results for N = 6')
-    plt.xlabel('Mission number')
-    plt.ylabel('Average number of missions won by spies')
-    plt.xticks(x)
-    plt.yticks(x)
+        axs[1].plot(x, l6_avg[i], linestyle=line, color='orange',
+                    marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
+    axs[0].legend(handles=legend_elements, loc='upper left')
+    axs[0].set_title('Results for N = 5')
+    axs[0].set_xlabel('Mission number')
+    axs[0].set_ylabel('Average number of missions won by spies')
+    axs[0].set_xticks(x)
+    axs[0].set_yticks(x)
+    axs[1].set_title('Results for N = 6')
+    axs[1].set_xlabel('Mission number')
+    axs[1].set_ylabel('Average number of missions won by spies')
+    axs[1].set_xticks(x)
+    axs[1].set_yticks(x)
+    fig.suptitle("Plots for N = 5 and N = 6 with the default party size")
     plt.savefig('figure_n6.png')
     plt.show()
 
@@ -202,7 +213,7 @@ def main():
     make_subcharts_5(n5)
     n6 = read_data(6)
     n6['new_rounds_won'] = redefine_rounds(n6['rounds_won_spies'])
-    make_line_chart_6(n6)
+    make_line_chart_6(n5, n6)
 
 
 if __name__ == "__main__":
