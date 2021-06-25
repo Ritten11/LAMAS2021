@@ -20,8 +20,8 @@ def resistance_agent_portrayal(agent):
         portrayal = {
             "Shape": "rect",
             "Filled": "true",
-            "w": 0.8,
-            "h": 0.8,
+            "w": 1.0,
+            "h": 1.0,
             "Layer": 1,
             "Color": "white",
             "text": agent.description,
@@ -34,8 +34,7 @@ def resistance_agent_portrayal(agent):
             "Layer": 1,
             "r": 0.5,
             "text": str(agent.unique_id),
-            "text_color": "white",
-            "scale": 0.8,
+            "text_color": "white"
         }
         if type(agent) is Spy:
             portrayal["Color"] = "red"
@@ -91,9 +90,9 @@ class ModelServer:
             "S": S, "debug": debug
         }
         if N == 5:
-            self.grid_width = 8
+            self.grid_width = 7
         elif N == 6:
-            self.grid_width = 8
+            self.grid_width = 7
         else:
             raise IOError("Incorrect number of agents.")
 
