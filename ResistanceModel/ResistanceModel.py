@@ -204,7 +204,7 @@ class ResistanceModel(Model):
                 temp = [Not(Atom(str(a))) for a in no_votes]
                 formula = temp[0]
                 if len(no_votes) > 1:
-                    for i in range(1,len(temp)+1):
+                    for i in range(1,len(temp)):
                         formula = And(formula, temp[i])
                 print(formula)
                 self.kripke_model.ks = self.kripke_model.ks.solve(formula)
