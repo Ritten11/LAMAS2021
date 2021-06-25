@@ -1,4 +1,6 @@
-Authors: Ella Collins, Lonneke Langeveld, and Ritten Roothaert. 
+
+# Modelling the Resistance using Higher Order Knowledge
+Authors: Ella Collins, Lonneke Langeveld, and Ritten Roothaert
 
 # Introduction
 
@@ -111,6 +113,9 @@ We will go through these results separately, but first we have to explain a few 
 - _PS_ stands for _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
 
 ## Identity revealed
+For 5 players (N=5), the table below shows the average mission number in which the idenity of both spies was revealed to all resistance agents. We also count the number of times (out of 50) that the identity of the spies was not revealed to the resisitance agents to better understand the influence of the different parameters. As can be seen in the table, the use of higher order knowledge by the spies (SPHOK) drastically increases the odds of the spies not being revealed to the Resistance. With the resistance using higher order knowledge (RHOK) it there is a slight decrease in the amount of times the spies are not revealed. Interestingly, with party sizes (PS) of 3 for every mission the spies are more easily revealed while both SPHOK and RHOK are true. This is because there are less instances of the spies not being revealed and on average they are revealed in an earlier mission. Overall, we can see that with both SPHOK and RHOK being true, the identity of the spies are more frequently discerned compared to when only SPHOK is true.
+
+Looking at the results for when spies are not using higher order knowledge (SPHOK is false), we can see that the identities of the spies are revealed quite frequently and, on average, in either the third of fourth mission. With a party size (PS) of 3 for every mission, the identity of the spies remains a secret from the Resistance for longer, for both resistance agents using higher order knowledge (RHOK) or not. We can also see that when RHOK is true the resistance agents are able to learn the identities of the spies more frequently than when RHOK is false.
 
 | SPHOK   | RHOK   | PS   |   not revealed |   average |
 |:--------|:-------|:-----|---------------:|----------:|
@@ -127,6 +132,13 @@ We will go through these results separately, but first we have to explain a few 
 | False   | False  | def  |             15 |   3.62857 |
 | False   | False  | 3    |             21 |   3.51724 |
 
+For 6 players (N=6), the table below shows the average mission number in which the identity of both spies was revealed to all Resistance agents and the number of times (out of 50) that the identity of the spies was not revealed. As mentioned previously, we only looked at the effect of higher order knowledge used by the spies and the resistance agents on the performance with the default party sizes for 6 agents. 
+
+Here we can see that influence of the spies using higher order knowledge (SPHOK) substrantially increases the odds of the spies not being revealed to the Resistance. Also, it seems that when the spies are revealed it is in one of the last missions of the game, mission 4 or 5. Resistance agents using higher order knowledge (RHOK) seems to have little effect when SPHOK is also true. However, there seems to be a small increase in performance for the resistance agents when SPHOK is false. 
+
+Comapring the results of 6 players with those of 5 players with the default party sizes (PS), we can see that with SPHOK as true, there seems to be little difference in the amount of times the spies are revealed but, there is a difference in when they were revealed. For 5 players, the average mission number for when the spies were revealed is 5, whereas for 6 players it is around 4.5. This suggests that with 6 players the resistance agents are faster at discerning the identity of the spies. Looking at the difference between 5 and 6 players when SPHOK is false, we can see that with resistance agents using higher order knowlege (RHOK), the spies are revealed very easily for 5 players. However, this is not the case with 6 players. When RHOK is false there seems to be little difference in performance between 5 players and 6 players.
+
+Results for N = 6
 | SPHOK   | RHOK   |   not revealed |   average |
 |:--------|:-------|---------------:|----------:|
 | True    | True   |             45 |   4.4     |
@@ -140,8 +152,6 @@ We will go through these results separately, but first we have to explain a few 
 ![Image](images/results_subn5.png)
 
 # Conclusion
-
-# Running instructions
 
 
 <!--- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
