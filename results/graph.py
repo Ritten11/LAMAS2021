@@ -98,7 +98,7 @@ def make_main_chart_5(df):
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 5')
     plt.xlabel('Mission number')
-    plt.ylabel('Average number of rounds won by spies')
+    plt.ylabel('Average number of missions won by spies')
     plt.xticks(x)
     plt.yticks(x)
     plt.savefig('figure_n5.png')
@@ -124,7 +124,7 @@ def make_subcharts_5(df):
                color='black', label='RHOK = True'),
         Line2D([0], [0], marker='s', mec='red', mfc='red', color='black', label='RHOK = False')
     ]
-    fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(22, 12))
+    fig, axs = plt.subplots(1, 3, figsize=(22, 12))
     for i in range(12):
         sphok, rhok, ps = p[i]
         line, mark, marks, markc, z = determine_style(sphok, rhok)
@@ -146,9 +146,9 @@ def make_subcharts_5(df):
     axs[0].set_xlabel("Mission number")
     axs[1].set_xlabel("Mission number")
     axs[2].set_xlabel("Mission number")
-    axs[0].set_ylabel('Average number of rounds by spies')
-    axs[1].set_ylabel('Average number of rounds by spies')
-    axs[2].set_ylabel('Average number of rounds by spies')
+    axs[0].set_ylabel('Average number of missions won by spies')
+    axs[1].set_ylabel('Average number of missions won by spies')
+    axs[2].set_ylabel('Average number of missions won by spies')
     plt.xticks(x)
     plt.yticks(x)
     plt.savefig('figure_subn5.png')
@@ -182,7 +182,7 @@ def make_line_chart_6(df):
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 6')
     plt.xlabel('Mission number')
-    plt.ylabel('Average number of rounds by spies')
+    plt.ylabel('Average number of missions won by spies')
     plt.xticks(x)
     plt.yticks(x)
     plt.savefig('figure_n6.png')
