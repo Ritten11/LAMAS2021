@@ -61,9 +61,6 @@ class ResistanceModel(Model):
         self.running = True
         self.ui_message = "New model is initialized"
 
-        # self.dataCollector = DataCollector(
-        #     model_reporters={"get_identity_revealed": get_identity_revealed})  # "get_mission_results": self.get_mission_results,
-
     def init_team_size(self):
         ''' 
         Initialise the array for the number of agents on the team per mission 

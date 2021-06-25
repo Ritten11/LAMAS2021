@@ -27,8 +27,8 @@ def init_argparse() -> argparse.ArgumentParser:
                         help="Specify whether the spies should use higher order knowledge")
     parser.add_argument('-rhok', '--resistance_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the resistance should use higher order knowledge")
-    parser.add_argument('-iter', '--iterations', default=10, type=int,
-                        choices=[1, 2, 5, 10, 15, 20],
+    parser.add_argument('-iter', '--iterations', default=50, type=int,
+                        choices=[5, 10, 15, 20, 50, 100],
                         help='Specify the number of iterations for each \
                         condition when running the simulation in batch mode')
     parser.add_argument('-debug', default=False, type=bool,
@@ -36,9 +36,6 @@ def init_argparse() -> argparse.ArgumentParser:
     return parser
 
 
-parser = init_argparse()
-options = parser.parse_args()
-args = vars(options)
 
 
 def get_identity_revealed(model):
@@ -53,6 +50,14 @@ def get_mission_results(model):
         s = s + str(i)
     return int(s)
 
+
+'''
+Running "python3 RunSimulation.py" run the code below. Based on the flags passed when running the script, either the 
+BatchRunner is started of a mesa server with GUI is started. 
+'''
+parser = init_argparse()
+options = parser.parse_args()
+args = vars(options)
 
 if options.run_mode == 'gui':
     server = ModelServer(N=options.number_of_agents, ps=options.party_size, debug=options.debug,
@@ -104,6 +109,3 @@ elif options.run_mode == 'batch':
         run_data.to_json(outfile)
 else:
     print("Please pick a valid option for the --run_mode flag")
-# server = ModelServer()
-#
-# server.run_server()

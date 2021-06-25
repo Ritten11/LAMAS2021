@@ -76,7 +76,7 @@ class Resistance(AbstractAgent):
 
     def decide_on_vote(self):
         '''
-
+        TODO: Missing a description
         :return:
         '''
         # Checks whether the agent accepts the mission team or not
