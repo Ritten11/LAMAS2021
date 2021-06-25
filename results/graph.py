@@ -183,9 +183,10 @@ def make_line_chart_6(n5, n6):
                  marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
         axs[1].plot(x, l6_avg[i], linestyle=line, color='orange',
                     marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
-    axs[0].legend(handles=legend_elements, loc='upper left')
+    axs[0].legend(handles=legend_elements, loc='upper left', fontsize=20)
 
-    axs[0].set_title('Results for N = 5')
+    axs[0].set_title('Results for N = 5', fontsize=20)
+    axs[1].set_title('Results for N = 6', fontsize=20)
     for i in range(2):
         axs[i].set_xlabel("Mission number", fontsize=20)
         axs[i].set_ylabel('Average number of missions won by spies', fontsize=20)
@@ -193,7 +194,7 @@ def make_line_chart_6(n5, n6):
         axs[i].set_xticks(x)
         axs[i].xaxis.set_tick_params(labelsize=15)
         axs[i].yaxis.set_tick_params(labelsize=15)
-    fig.suptitle("Plots for N = 5 and N = 6 with the default party size")
+    fig.suptitle("Plots for N = 5 and N = 6 with the default party size", fontsize=20)
     plt.savefig('figure_n6.png')
     plt.show()
 
