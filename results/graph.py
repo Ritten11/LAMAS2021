@@ -39,6 +39,7 @@ def calculate_average(l_all):
 
 
 def determine_style(sphok, rhok):
+    """Determines the style in which to build a line"""
     if sphok:
         line = 'solid'
     else:
@@ -96,7 +97,7 @@ def make_main_chart_5(df):
                  marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 5')
-    plt.xlabel('Number of rounds')
+    plt.xlabel('Mission number')
     plt.ylabel('Number of rounds won by spies')
     plt.xticks(x)
     plt.savefig('figure_n5.png')
@@ -104,6 +105,7 @@ def make_main_chart_5(df):
 
 
 def make_subcharts_5(df):
+    """Divides the main chart into three charts for different party sizes"""
     s = [df['sphok'].unique(), df['rhok'].unique(), df['ps'].unique()]
     p = list(itertools.product(*s))
     l_all = []
@@ -140,9 +142,9 @@ def make_subcharts_5(df):
     axs[1].set_title("PS = 3")
     axs[2].set_title("PS = default")
     fig.suptitle("Main plot for N=5 divided into party size-plots")
-    axs[0].set_xlabel("Number of rounds")
-    axs[1].set_xlabel("Number of rounds")
-    axs[2].set_xlabel("Number of rounds")
+    axs[0].set_xlabel("Mission number")
+    axs[1].set_xlabel("Mission number")
+    axs[2].set_xlabel("Mission number")
     axs[0].set_ylabel('Number of rounds won by spies')
     axs[1].set_ylabel('Number of rounds won by spies')
     axs[2].set_ylabel('Number of rounds won by spies')
@@ -177,7 +179,7 @@ def make_line_chart_6(df):
                  marker=mark, mec=markc, mfc=markc, ms=marks, zorder=z)
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 6')
-    plt.xlabel('Number of rounds')
+    plt.xlabel('Mission number')
     plt.ylabel('Number of rounds won by spies')
     plt.xticks(x)
     plt.savefig('figure_n6.png')

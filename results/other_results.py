@@ -8,6 +8,8 @@ def read_data(n):
 
 
 def get_numbers(nums):
+    """Gets the number of rounds in which the spies aren't revealed and
+    the average round number in which they were revealed (if they were revealed)"""
     no_reveal = 0
     num = 0
     den = 0
@@ -27,6 +29,7 @@ def get_numbers(nums):
 
 
 def get_results_5(df):
+    """Builds the dataframe to put into markdown for N = 5"""
     s =[df['sphok'].unique(), df['rhok'].unique(), df['ps'].unique()]
     p = list(itertools.product(*s))
     new_df = pd.DataFrame(columns=['SPHOK', 'RHOK', 'PS', 'not revealed', 'average'])
@@ -40,6 +43,7 @@ def get_results_5(df):
     return new_df
 
 def get_results_6(df):
+    """Builds the dataframe to put into markdown for N = 6"""
     s = [df['sphok'].unique(), df['rhok'].unique()]
     p = list(itertools.product(*s))
     new_df = pd.DataFrame(columns=['SPHOK', 'RHOK', 'not revealed', 'average'])
