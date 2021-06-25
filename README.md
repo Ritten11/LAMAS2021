@@ -7,14 +7,16 @@ Please install all the requirements with the following command:
 pip3 install -r requirements.txt
 ```
 
-![Simulation UI](https://raw.githubusercontent.com/Daankrol/D27-DMAS-Corona-spread-train/master/Simulation_UI.png?token=ABW24R6YUHA2NC7PG6DNZ2S7VOVAY)
-
 ## Run
 The default model is ran with the command:
 ```bash
 python3 RunSimulation.py
 ```
-This will open a webbrowser tab and show you a GUI of the model. In this model, you can see the typical run through of a game of Resistance.
+This will open a webbrowser tab and show you a GUI of the model as depicted below:
+![Simulation UI](https://raw.githubusercontent.com/Ritten11/LAMAS2021/gh-pages/images/Simulation_GUI.png)
+
+
+In this model, you can see the typical run through of a game of Resistance.
 * A Mission Leader is chosen. The first Mission Leader is chosen randomly - after that, the next player in line becomes the new mission leader.
 * The Mission Leader selects a team to send on the mission. The number of people on the team differs per mission.
 * All players vote on the team composition. If at least half of the players agree with the team composition, the team is sent on a mission. If more than half of the players disagree with the team composition, a new player becomes the Mission Leader and step two and three are repeated. If there are 5 failed attempts to create a mission team, the government spies automatically get one point, and the next round starts.
