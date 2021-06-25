@@ -72,12 +72,15 @@ class Resistance(Agent):
 
     def decide_on_vote(self):
         '''
-        TODO: Missing a description
-        :return:
+        Returns a bool that described whether a Resistance agent agrees with the mission team.
+        When the agent is certain there is a spy in the mission, they vote no. Else, they vote yes.
+        :return: a bool describing the agent's vote
         '''
-        # Checks whether the agent accepts the mission team or not
+        # Finds relations for the agents
         relations = self.model.kripke_model.ks.relations[str(self.unique_id)]
+        # Finds worlds accessible for the agent from the true world
         worlds = [rel[1] for rel in relations if rel[0] == self.model.true_world]
+
         suspicions = [0] * len(self.model.mission_team)
         for i, agent in enumerate(self.model.mission_team):
             if agent == self.unique_id:
@@ -86,6 +89,8 @@ class Resistance(Agent):
                 for world in worlds:
                     if str(agent) in world:
                         suspicions[i] += 1
+
+        # If a team member is in each accessible world, the agent knows they're a spy
         for s in suspicions:
             if s == len(worlds):
                 return False
