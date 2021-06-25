@@ -5,7 +5,7 @@ Authors: Ella Collins, Lonneke Langeveld, and Ritten Roothaert.
 ### The Resistance
 For our project, we implemented a multi-agent simulation based on The Resistance. The Resistance is a multiplayer deductive reasoning role-playing game designed by Don Eskridge in 2010. The players are divided into two "factions": the Resistance (the "good guys") and the government spies (the "bad guys"). Within the game, players are sent on 5 missions that can either pass or fail. Both teams work to score at least three points. A minimum of five players is required for the game.
 
-At the start of a game with five players, two players are chosen at random to be spies, and the other three players are the resistance. The spies know each other's identity while the Resistance remains in the dark. Each round consists of several elements:
+At the start of a game with five players, two players are chosen at random to be spies, and the other three players are the resistance. The spies know each other's identity while the Resistance remains in the dark. After this intitial revelation, the spies are no loner able to comminute privately and thus all comminucation between them has to be public. Each round consists of several elements:
 1. A Mission Leader is chosen. The first Mission Leader is chosen randomly - after that, the player to the left of the previous Mission Leader becomes the new Mission Leader.
 2. The Mission Leader selects a team to send on the mission. The number of people on the team differs per mission.
 3. All players vote on the team composition. If at least half of the players agree with the team composition, the team is sent on a mission. If more than half of the players disagree with the team composition, a new player becomes the Mission Leader and step two and three are repeated. If there are 5 failed attempts to create a mission team, the government spies automatically get one point, and the next round starts.
@@ -95,18 +95,20 @@ The Resistance will win this game. They will vote against a mission team includi
 
   3. **Resistance uses higher order knowledge (RHOK)**: We also wanted to implement some additional higher order knowledge for the resistance agents. As explained prevously, the resistance agents can use the outcome of the voting round of a failed mission to try to determine the identity of the spies.
 
-  4. **Mission team sizes (PS)**: The rules of the game state that for 5 players the team sizes for the 5 missions are [2, 3, 2, 3, 3]. We are interested in seeing whether changing the team sizes has any influence on the outcome of the game. Therefore, we decided to also include the team sizes [2, 2, 2, 2, 2] and [3, 3, 3, 3, 3] for the 5 missions. For 6 players the team sizes are [2, 3, 4, 3, 4], which we did not vary.
-
-  We ran the simulation for each setting 10 times to retrieve an average performance for the agents. From our experiments we measured the following: 
+  4. **Party sizes (PS)**: The rules of the game state that for 5 players the party sizes for the 5 missions are [2, 3, 2, 3, 3]. We are interested in seeing whether changing the party sizes has any influence on the outcome of the game. Therefore, we decided to also include the party sizes [2, 2, 2, 2, 2] and [3, 3, 3, 3, 3] for the 5 missions. For 6 players the party sizes are [2, 3, 4, 3, 4], which we did not vary.
+  
+  For N=5, we ran every possible combination of parameter values. For N=6, we decided not to vary the party sizes as our the additional party member increased the computational complexity substantially. This allowed us to do more runs with varying the higher order knowledge use of the agents. 
+  
+  We ran the simulation for each setting 50 times to retrieve an average performance for the agents. From our experiments we measured the following: 
   1. The round in which the identity of the spies is clear (revealed) to all Resistance agents.
-  2. The number of rounds which the spies have won.
+  2. Which rounds are won by the spies. This allows us to see how many ronuds are won by the spies over the enitre course of the game
 
 # Results
 We will go through these results separately, but first we have to explain a few abbreviations that we will come across several times while describing these results:
 - _N_ stands for the number of agents that take part  in a game - this is always either 5 or 6.
-- _SPHOK_ means _spies higher order knowledge_, meaning that the spies either do or do not use higher order reasoning to determine whether to play a fail card.
-- _RHOK_ means _Resistance higher order knowledge_, meaning that the resistance either does or does not use higher order reasoning using the outcome of a voting round for a failed mission.
-- _PS_ means _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
+- _SPHOK_ stand for _spies higher order knowledge_, meaning that the spies either do or do not use higher order reasoning to determine whether to play a fail card.
+- _RHOK_ stands for _Resistance higher order knowledge_, meaning that the resistance either does or does not use higher order reasoning using the outcome of a voting round for a failed mission.
+- _PS_ stands for _party size_, which we vary between always between two (as described by a _2_), always being three (_3_) or using the settings from the game rules (_def_ for default).
 
 ## Identity revealed
 The table below shows the average epoch at which the identity of both spies was revealed to all resistance agents. 
