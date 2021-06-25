@@ -157,6 +157,16 @@ The graph below shows a comparison between the results for 5 players and 6 playe
 Overall, the graphs nicely illustrate that the use of higher order knowledge has a positive influence on the performance of the agents, may that be resistance or spy. 
 
 # Conclusion
+Our main finding is that higher-order knowledge, be it for the spies or the resistance, really does make a difference in playing the game.
+When the spies reason with higher-order knowledge, they always perform better (i.e. win more missions) than when they do not use higher-order knowledge. The same goes for the Resistance players. When an agent reasons with higher-order knowledge, they utitlize more information in making their decisions. It would make sense that having more information leads to making a better decision. Therefore, the results we have are compliant with what one would expect.
+
+This effect does seem to be stronger for spies. There is a clear difference in how often spies are found out when they do or do not use higher-order knowledge. The difference in when the Resistance members use higher-order knowledge or not seems to be much smaller.
+
+We can also draw conclusions from the other parameters. We see that party size has a substantial effect on whether the spies are found out or not when the spies do not use higher-order knowledge, where the spies are found out more often in smaller party sizes.
+It is important to keep in mind that when spies do not use higher-order knowledge, they always play a fail-card. When the party size is larger and a fail-card is played, the Resistance has less information to work with, as one out of three (instead of, for example, one out of two) of the members on the mission is a spy.
+We also see that, in general, a smaller party size translates to the spies winning fewer missions, and therefore fewer games.
+
+Lastly, we find that the use of higher-order knowledge for Resistance members has much more effect in a 5-agent game than in a 6-agent game. In a 5-agent game, there are 2 spies and 3 Resistance members; in a 6-agent game, the added agent is a Resistance member. The Resistance members therefore have a larger chance of winning in a 6-agent game than in a 5-agent game. Using higher-order knowledge in a 5-agent game therefore has a larger effect than in a 6-agent game.
 
 
 <!--- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
