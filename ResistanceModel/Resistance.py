@@ -1,15 +1,11 @@
-from ResistanceModel.AbstractAgent import AbstractAgent
+from mesa import Agent
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
 
 
-class Resistance(AbstractAgent):
+class Resistance(Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
-
-    def initKB(self):  # I dont think we need this right? we can just initialize this in __int__?
-        self.card = None
-        self.vote = None
 
     def step(self):
         '''

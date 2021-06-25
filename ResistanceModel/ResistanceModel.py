@@ -39,7 +39,6 @@ class ResistanceModel(Model):
                 self.true_world += str(i)
             else:
                 a = Resistance(i, self)
-            a.initKB()
             self.schedule.add(a)
             self.grid.place_agent(a, (i, 0))
         if debug:

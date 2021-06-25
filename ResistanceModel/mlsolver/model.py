@@ -96,7 +96,6 @@ class Resistance5Agents:
         world_truths = []
         for world in worlds:
             diction = {}
-            #world_truths[world] = {p: True for p in world}
             for agent in range(1, N+1):
                 if str(agent) not in world:
                     diction[str(agent)] = False
