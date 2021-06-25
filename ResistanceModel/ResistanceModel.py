@@ -4,6 +4,7 @@ from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
+from ResistanceModel.TextElement import TextElement
 from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
@@ -59,6 +60,19 @@ class ResistanceModel(Model):
         self.announcement = None
         self.running = True
         self.ui_message = "New model is initialized"
+        self.add_text_elements()
+
+    def add_text_elements(self):
+        '''
+        Method for adding descriptive text elements to the grid.
+        :return:
+        '''
+        descriptions = ['Remaining\n team:', 'Mission leader:', 'Mission party:']
+        for i, description in enumerate(descriptions):
+            a = TextElement(10+i, self, description)
+            print(f"Adding agent {a.unique_id} with description {a.description}")
+            # self.schedule.add(a)
+            self.grid.place_agent(a, (0, (i*2)))
 
     def init_team_size(self):
         ''' 
