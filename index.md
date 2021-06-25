@@ -146,9 +146,15 @@ Comapring the results of 6 players with those of 5 players with the default part
 | False   | False  |             19 |   3.77419 |
 
 ## Rounds won by the spies
+In the graph below we can see the mission number against the average number of missions won by the spies for 5 players. We split this graph up into three subgraphs, one for each variant of the party size (PS), to increase readability. Firstly, we can easily see that with a PS of 2 for each mission, the spies receive less points than the other conditions. Also, a PS of 3 for each mission, seems to be the optimum for the spies. 
 
-![Image](images/results_n5.png) ![Image](images/results_n6.png)
+Regardless of the PS, the spies receive the most points when they are using higher order knowledge (SPHOK is true) and the resistance agents are not (RHOK is false). Additionally, when the resistance agents are using higher order knowledge (RHOK is true), the performance of the spies decreases.  
 ![Image](images/results_subn5.png)
+
+The graph below shows a comparison between the results for 5 players and 6 players, both with the default party size. For both conditions it seems that there is little difference when the spies are using higher order knowledge (SPHOK), regardless of whether the resistance agents are using higher order knowledge (RHOK). We do see a small difference between 5 players and 6 players when looking at SPHOK is false. For 5 players the spies receive less points on average than for 6 players. These resutls were also reflected in the tables explained above.
+![Image](images/results_n6.png)
+
+Overall, the graphs nicely illustrate that the use of higher order knowledge has a positive influence on the performance of the agents, may that be resistance or spy. 
 
 # Conclusion
 
