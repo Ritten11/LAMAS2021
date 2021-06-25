@@ -8,7 +8,7 @@ pip3 install -r requirements.txt
 ```
 
 ## Run
-The default model is ran with the command:
+The default model is run with the command:
 ```bash
 python3 RunSimulation.py
 ```
