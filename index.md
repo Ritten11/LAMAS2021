@@ -102,8 +102,8 @@ The Resistance will win this game. They will vote against a mission team includi
   For N=5, we ran every possible combination of parameter values. For N=6, we decided not to vary the party sizes as our the additional party member increased the computational complexity substantially. This allowed us to do more runs with varying the higher order knowledge use of the agents. 
   
   We ran the simulation for each setting 50 times to retrieve an average performance for the agents. From our experiments we measured the following: 
-  1. The round in which the identity of the spies is clear (revealed) to all Resistance agents. This occurs when the Kripke model as be simplified to only one state.
-  2. Which rounds are won by the spies. This allows us to see how many ronuds are won by the spies over the enitre course of the game
+  1. The round in which the identity of the spies is clear (revealed) to all Resistance agents. This occurs when the Kripke model has been simplified to only one state.
+  2. Which rounds are won by the spies. This allows us to see how many rounds are won by the spies over the entire course of the game.
 
 # Results
 
