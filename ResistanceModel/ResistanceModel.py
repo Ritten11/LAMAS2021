@@ -5,7 +5,7 @@ from mesa.space import MultiGrid
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
 from ResistanceModel.TextElement import TextElement
-from ResistanceModel.mlsolver.model import Resistance3Agents, Resistance5Agents
+from ResistanceModel.mlsolver.model import Resistance3Agents, ResistanceAgents
 from ResistanceModel.mlsolver.formula import Atom, And, Not, Or, Box_a, Box_star
 import random
 
@@ -45,7 +45,7 @@ class ResistanceModel(Model):
         if debug:
             print(f"true world: {self.true_world}")
         
-        self.kripke_model = Resistance5Agents(N=self.num_agents) # Create Kripke model
+        self.kripke_model = ResistanceAgents(N=self.num_agents) # Create Kripke model
         
         self.team_sizes = self.init_team_size()
         

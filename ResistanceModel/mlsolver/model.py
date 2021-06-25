@@ -71,9 +71,9 @@ class Resistance3Agents:
         relations.update(add_reflexive_edges(worlds, relations))
         self.ks = KripkeStructure(worlds, relations)
 
-class Resistance5Agents: 
+class ResistanceAgents: 
     """
-    This class models the Kripke structure of the Resistance game with 5 agents.
+    This class models the Kripke structure of the Resistance game with 5 or 6 agents.
     """
     knowledge_base = []
 
