@@ -27,8 +27,8 @@ def init_argparse() -> argparse.ArgumentParser:
                         help="Specify whether the spies should use higher order knowledge")
     parser.add_argument('-rhok', '--resistance_higher_order_knowledge', default=False, type=bool,
                         help="Specify whether the resistance should use higher order knowledge")
-    parser.add_argument('-iter', '--iterations', default=10, type=int,
-                        choices=[1, 2, 5, 10, 15, 20],
+    parser.add_argument('-iter', '--iterations', default=50, type=int,
+                        choices=[5, 10, 15, 20, 50, 100],
                         help='Specify the number of iterations for each \
                         condition when running the simulation in batch mode')
     parser.add_argument('-debug', default=False, type=bool,
