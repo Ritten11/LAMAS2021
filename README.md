@@ -1,6 +1,6 @@
-# Logical aspects of Multi-agent Systems: A simulation of the game of Resistance
+# Modelling the Resistance using Higher Order Knowledge
 
-## Requirements (all python 3.+)
+## Requirements (all Python 3.+)
 
 Please install all the requirements with the following command:
 ```bash
@@ -24,14 +24,14 @@ In this model, you can see the typical run through of a game of Resistance.
 
 Within this GUI, there are several parameters that can be altered in order to change the working of the model:
 * Number of agents [5,6]: Choose the number of agents within the model.
-* Party size [2,default,3]: Choose how many agents are send on a mission. Setting this to either 2 or 3 will make the party size constant over the entire run. Using the default setting will select the variable party sizes as defined in the ![official rules](https://en.wikipedia.org/wiki/The_Resistance_(game)) of the game of resistance.
-* Higher order reasoning spies [ON, OFF]: Select wether the spies should use higher order knowledge when deciding on playing a fail card.
-* Higher order reasoning resistance [ON, OFF]: Select wether the spies should use higher order knowledge when analysing the results of voting for a mission party.
+* Party size [2,default,3]: Choose how many agents are sent on a mission. Setting this to either 2 or 3 will make the party size constant over all the missions. Using the default setting will select the variable party sizes as defined in the [official rules](https://en.wikipedia.org/wiki/The_Resistance_(game)) of the game.
+* Higher order reasoning spies [ON, OFF]: Select whether the spies should use higher order knowledge when deciding on playing a fail card.
+* Higher order reasoning resistance [ON, OFF]: Select whether the spies should use higher order knowledge when analysing the results of voting for a mission party.
 
-Note that setting N=6 in combination with any form of higher order reasoning substantially increases the computation complexity of out simulation. This restults in a slight delay in the step function. Therefore, please have a little patience using these parameter settings.
+Note that setting N=6 in combination with any form of higher order reasoning substantially increases the computation complexity of our simulation. This results in a slight delay in the step function. Therefore, please have a little patience if you use these parameter settings.
 
-### flags
-Another way of changing these parameters, is using flags when running the 'RunSimulation.py'. The parameters discussed above can be set with the following flags:
+### Flags
+Another way of changing these parameters is using flags when running the 'RunSimulation.py'. The parameters discussed above can be set with the following flags:
 ```bash
 -N, --number_of_agents [5, 6]
 -ps, --party_size ['2', 'default', '3']
@@ -43,8 +43,7 @@ The same mechanism of using flags is also used to activate the Batchrunner and s
 -rm, --run_mode ['gui', 'batch']
 -iter, --iterations [5, 10, 15, 20, 50, 100]
 ```
-The Batchrunner runs different variations of parameter settings for N=5 and N=6. This is due to the increased computational complexity when running with N=6. We decided skip varying the party size as this reduces the total number of iterations needed for N=6 by 2/3, substantially reducing the time required to finish running the Batchrunner.
-
+The Batchrunner runs different variations of parameter settings for N=5 and N=6. This is due to the increased computational complexity when running with N=6. We decided skip varying the party size as this reduces the total number of iterations needed for N=6 by two-thirds, substantially reducing the time required to finish running the Batchrunner.
 
 Finally, there is also a flag which can be used for further debugging:
 ```bash
@@ -56,3 +55,6 @@ For more information on how to use these flags, run the command:
 ```bash
 python3 RunSimulation.py -h
 ```
+
+## Results
+To get the graphs as in the [report](https://ritten11.github.io/LAMAS2021/), move to the results-folder and run ```python3 graph.py```. This will generate graphs based on the results from your run. You can see these graphs as pop-ups (one after the other), and all graphs will be saved to the results-folder.
