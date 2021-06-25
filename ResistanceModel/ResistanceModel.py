@@ -67,10 +67,11 @@ class ResistanceModel(Model):
         Method for adding descriptive text elements to the grid.
         :return:
         '''
-        descriptions = ['Remaining\n team:', 'Mission leader:', 'Mission party:']
+        descriptions = ['Remaining:', 'Leader:', 'Mission party:']
         for i, description in enumerate(descriptions):
             a = TextElement(10+i, self, description)
-            print(f"Adding agent {a.unique_id} with description {a.description}")
+            if self.debugging:
+                print(f"Adding agent {a.unique_id} with description {a.description}")
             # self.schedule.add(a)
             self.grid.place_agent(a, (0, (i*2)))
 
@@ -98,7 +99,7 @@ class ResistanceModel(Model):
             self.mission_leader = self.mission_leader + 1 if self.mission_leader < (self.num_agents) else 1
 
     def step(self):
-        '''Advance the model by one step.'''
+        '''Advance the model by one step based on the current state of the model.'''
         if self.state == None:
             self.state = "choose_team"
         
@@ -119,13 +120,13 @@ class ResistanceModel(Model):
             if self.check_vote_passed():
                 self.ui_message = f"The team was accepted. The agents voted:"
                 for agent in self.schedule.agents:
-                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
+                    self.ui_message += f"<br>{agent.unique_id}: {agent.vote}"
                 self.state = "go_on_mission"
             else:
                 self.state = "choose_team"
                 self.ui_message = f"The team was rejected. The agents voted:"
                 for agent in self.schedule.agents:
-                    self.ui_message += f"<br>{(agent.unique_id, agent.vote)}"
+                    self.ui_message += f"<br>{agent.unique_id}: {agent.vote}"
                 self.ui_message += f"<br> A new team leader needs to be selected."
                 if self.try_leader == 5:
                     self.ui_message = f"Team selection failed too often. The spies automatically win this round."

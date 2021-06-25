@@ -7,6 +7,7 @@ class Resistance(Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
         self.card = None
+        self.vote = None
 
     def step(self):
         '''
@@ -15,7 +16,7 @@ class Resistance(Agent):
         vote: the agent gets to vote on the chosen team
         go_on_mission: if the agent is on the mission they choose a card to play
         update_knowledge: the agent deliberates on the voting results of the mission
-            based on the result of the mission
+            based on the result of the mission (is done in ResistanceModel)
         '''
         if self.model.state == "choose_team":
             if self.model.mission_leader == self.unique_id:

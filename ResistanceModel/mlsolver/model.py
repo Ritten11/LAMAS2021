@@ -87,6 +87,10 @@ class Resistance5Agents:
         self.ks = KripkeStructure(self.kripke_worlds, self.relations)
 
     def create_worlds(self, N):
+        """
+        This function creates two arrays, one with the names of the worlds and one with the kripke worlds
+        :return: the worlds
+        """
         worlds = []
         for one in range(1, N+1):
             for two in range(1, N+1):
@@ -109,6 +113,10 @@ class Resistance5Agents:
         return worlds, kripke_worlds
 
     def create_relations(self, worlds, N):
+        """
+        This function creats the relations between the worlds in the kripke model
+        :return: a map of the relations for the agents
+        """
         relations = {}
         for agent in range(1,N+1):
             relations[str(agent)] = []
