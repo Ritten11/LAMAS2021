@@ -139,6 +139,7 @@ Here we can see that influence of the spies using higher order knowledge (SPHOK)
 Comapring the results of 6 players with those of 5 players with the default party sizes (PS), we can see that with SPHOK as true, there seems to be little difference in the amount of times the spies are revealed but, there is a difference in when they were revealed. For 5 players, the average mission number for when the spies were revealed is 5, whereas for 6 players it is around 4.5. This suggests that with 6 players the resistance agents are faster at discerning the identity of the spies. Looking at the difference between 5 and 6 players when SPHOK is false, we can see that with resistance agents using higher order knowlege (RHOK), the spies are revealed very easily for 5 players. However, this is not the case with 6 players. When RHOK is false there seems to be little difference in performance between 5 players and 6 players.
 
 |Results for 6 players                          |
+|:----------------------------------------------|
 | SPHOK   | RHOK   |   not revealed |   average |
 |:--------|:-------|---------------:|----------:|
 | True    | True   |             45 |   4.4     |
