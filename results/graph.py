@@ -32,7 +32,7 @@ def calculate_average(l_all):
         for single_list in v:
             for i, score in enumerate(single_list):
                 total[i] += score
-        avg = [t / 10 for t in total]
+        avg = [t / 50 for t in total]
         l_avg.append(avg)
 
     return l_avg
@@ -98,8 +98,9 @@ def make_main_chart_5(df):
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 5')
     plt.xlabel('Mission number')
-    plt.ylabel('Number of rounds won by spies')
+    plt.ylabel('Average number of rounds won by spies')
     plt.xticks(x)
+    plt.yticks(x)
     plt.savefig('figure_n5.png')
     plt.show()
 
@@ -145,10 +146,11 @@ def make_subcharts_5(df):
     axs[0].set_xlabel("Mission number")
     axs[1].set_xlabel("Mission number")
     axs[2].set_xlabel("Mission number")
-    axs[0].set_ylabel('Number of rounds won by spies')
-    axs[1].set_ylabel('Number of rounds won by spies')
-    axs[2].set_ylabel('Number of rounds won by spies')
+    axs[0].set_ylabel('Average number of rounds by spies')
+    axs[1].set_ylabel('Average number of rounds by spies')
+    axs[2].set_ylabel('Average number of rounds by spies')
     plt.xticks(x)
+    plt.yticks(x)
     plt.savefig('figure_subn5.png')
     plt.show()
 
@@ -180,8 +182,9 @@ def make_line_chart_6(df):
     plt.legend(handles=legend_elements, loc='upper left')
     plt.title('Results for N = 6')
     plt.xlabel('Mission number')
-    plt.ylabel('Number of rounds won by spies')
+    plt.ylabel('Average number of rounds by spies')
     plt.xticks(x)
+    plt.yticks(x)
     plt.savefig('figure_n6.png')
     plt.show()
 
