@@ -5,6 +5,7 @@ from mesa.visualization.UserParam import UserSettableParameter
 from ResistanceModel.ResistanceModel import ResistanceModel
 from ResistanceModel.Spy import Spy
 from ResistanceModel.Resistance import Resistance
+from ResistanceModel.TextElement import TextElement
 from View.LegendElement import LegendElement
 from View.SimulationInfoElement import SimulationInfoElement
 
@@ -15,22 +16,34 @@ def resistance_agent_portrayal(agent):
     :param agent: The to be drawn agent
     :return: A dict with the portrayal of the agent
     '''
-    portrayal = {
-        "Shape": "circle",
-        "Filled": True,
-        "Layer": 1,
-        "r": 0.5,
-        "text": str(agent.unique_id),
-        "text_color": "white",
-        "scale": 0.8,
-    }
-    if type(agent) is Spy:
-        portrayal["Color"] = "red"
-    elif type(agent) is Resistance:
-        portrayal["Color"] = "blue"
+    if type(agent) is TextElement:
+        portrayal = {
+            "Shape": "rect",
+            "Filled": "true",
+            "w": 0.8,
+            "h": 0.8,
+            "Layer": 1,
+            "Color": "white",
+            "text": agent.description,
+            "text_color": 'black'
+        }
     else:
-        print("Class of current agent is not defined....")
-        raise TypeError
+        portrayal = {
+            "Shape": "circle",
+            "Filled": True,
+            "Layer": 1,
+            "r": 0.5,
+            "text": str(agent.unique_id),
+            "text_color": "white",
+            "scale": 0.8,
+        }
+        if type(agent) is Spy:
+            portrayal["Color"] = "red"
+        elif type(agent) is Resistance:
+            portrayal["Color"] = "blue"
+        else:
+            print("Class of current agent is not defined....")
+            raise TypeError
 
     return portrayal
 
